@@ -10,7 +10,7 @@ export default function AdminPanel() {
 
   useEffect(() => {
     const fetchData = () => {
-      fetch(`http://localhost:5000/api/auth/analytics/${shortId}`)
+      fetch(`https://user-tracking-1.onrender.com/api/auth/analytics/${shortId}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.logs) {
@@ -49,7 +49,7 @@ export default function AdminPanel() {
             {stats.length > 0 ? (
               stats.map((item, index) => (
                 <tr key={index}>
-                  <td>{`http://localhost:3000/t/${item.shortId}`}</td>
+                  <td>{`https://user-tracking-ebon.vercel.app/t/${item.shortId}`}</td>
                   <td>{item.destinationUrl}</td>
                   <td>{item.analytics?.length || 0}</td>
                   <td>

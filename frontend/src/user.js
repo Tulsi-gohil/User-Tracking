@@ -8,7 +8,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchAllUsers = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/auth/users');
+        const response = await fetch('https://user-tracking-1.onrender.com/api/auth/users');
         const data = await response.json();
         setUsers(Array.isArray(data) ? data : data.users || []);
         setLoading(false);

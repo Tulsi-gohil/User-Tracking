@@ -12,7 +12,7 @@ const TrackingUrl = () => {
     try {
 
       const res = await axios.post(
-        "http://localhost:5000/api/auth/generate",
+        "https://user-tracking-1.onrender.com/api/auth/generate",
         {
           destinationUrl: inputUrl
         }
@@ -22,7 +22,7 @@ const TrackingUrl = () => {
 
         const shortId = res.data.id;
 
-        const link = `http://localhost:3000/t/${shortId}`;
+        const link = `https://user-tracking-ebon.vercel.app/t/${shortId}`;
 
         setDisplayLink(link);
         setRealLink(link);
