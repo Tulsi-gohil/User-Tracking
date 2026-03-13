@@ -7,45 +7,24 @@ export default function AdminPanel() {
   // State Management
   const [stats, setStats] = useState([]); // Master list of all tracking URLs
   const [selectedShortId, setSelectedShortId] = useState(null); // Track which URL is being viewed
-useEffect(() => {
 
-  const fetchData = async () => {
+  useEffect(() => {
+    const fetchData = () => {
+      fetch(`https://user-tracking-1.onrender.com/api/auth/analytics/${shortId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.logs) {
+            setStats(data.logs);
+          }
+        })
+        .catch((err) => console.error("Error fetching data:", err));
+    };
 
-    try {
+    fetchData();
+    const interval = setInterval(fetchData, 2000); // Polling every 2 seconds
 
-      const res = await fetch(
-        `https://user-tracking-1.onrender.com/api/auth/analytics/${shortId}`
-      );
-
-      const data = await res.json();
-
-      console.log("API DATA:", data);
-
-      if (data.logs) {
-
-        setStats(data.logs);
-
-      } else {
-
-        setStats([data]); // fallback
-
-      }
-
-    } catch (err) {
-
-      console.error("Error fetching data:", err);
-
-    }
-
-  };
-
-  fetchData();
-
-  const interval = setInterval(fetchData, 10000);
-
-  return () => clearInterval(interval);
-
-}, [shortId]);
+    return () => clearInterval(interval);
+  }, [shortId]);
 
    const activeEntry = stats.find((item) => item.shortId === selectedShortId);
   const visitorLogs = activeEntry ? activeEntry.analytics : [];
