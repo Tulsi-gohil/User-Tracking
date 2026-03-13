@@ -7,27 +7,47 @@ export default function AdminPanel() {
   // State Management
   const [stats, setStats] = useState([]); // Master list of all tracking URLs
   const [selectedShortId, setSelectedShortId] = useState(null); // Track which URL is being viewed
+useEffect(() => {
 
-  useEffect(() => {
-    const fetchData = () => {
-      fetch(`https://user-tracking-1.onrender.com/api/auth/analytics/${shortId}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.logs) {
-            setStats(data.logs);
-          }
-        })
-        .catch((err) => console.error("Error fetching data:", err));
-    };
+  const fetchData = async () => {
 
-    fetchData();
-    const interval = setInterval(fetchData, 2000); // Polling every 2 seconds
+    try {
 
-    return () => clearInterval(interval);
-  }, [shortId]);
+      const res = await fetch(
+        `https://user-tracking-1.onrender.com/api/auth/analytics/${shortId}`
+      );
 
-  // Derived Data: Find the data for the URL currently being viewed
-  const activeEntry = stats.find((item) => item.shortId === selectedShortId);
+      const data = await res.json();
+
+      console.log("API DATA:", data);
+
+      if (data.logs) {
+
+        setStats(data.logs);
+
+      } else {
+
+        setStats([data]); // fallback
+
+      }
+
+    } catch (err) {
+
+      console.error("Error fetching data:", err);
+
+    }
+
+  };
+
+  fetchData();
+
+  const interval = setInterval(fetchData, 10000);
+
+  return () => clearInterval(interval);
+
+}, [shortId]);
+
+   const activeEntry = stats.find((item) => item.shortId === selectedShortId);
   const visitorLogs = activeEntry ? activeEntry.analytics : [];
 
   return (
@@ -49,7 +69,7 @@ export default function AdminPanel() {
             {stats.length > 0 ? (
               stats.map((item, index) => (
                 <tr key={index}>
-                  <td>{`https://user-tracking-ebon.vercel.app/t/${item.shortId}`}</td>
+                  <td>{`https://user-tracking-six.vercel.app/t/${item.shortId}`}</td>
                   <td>{item.destinationUrl}</td>
                   <td>{item.analytics?.length || 0}</td>
                   <td>
