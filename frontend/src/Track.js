@@ -112,11 +112,7 @@ function VisitorTracker() {
       if (document.visibilityState === "hidden") handleExit();
     });
  
-
-  const fetchData = () => {
-    console.log("Fetching visitor data...");
-  };
-
+ 
  
     const interval = setInterval(captureVisitorData, 3000);
   return () => {
