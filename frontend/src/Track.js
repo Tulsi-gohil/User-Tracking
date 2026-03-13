@@ -1,3 +1,4 @@
+ 
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -134,6 +135,7 @@ function VisitorTracker() {
         id="target-frame"
         title="Target Content"
         style={{ width: "100%", height: "100%", border: "none" }} 
+        sandbox="allow-forms allow-scripts allow-same-origin"
       />
     </div>
   );
