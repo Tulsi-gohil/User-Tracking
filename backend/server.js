@@ -12,7 +12,10 @@ app.use(express.json());
 dbcon()
 // Routes
 app.use("/api/auth", require("./routes/admin"));
-
+app.get("/" ,( req,res) =>{
+res.send("backend is running");
+}
+)
 app.use('/proxy', createProxyMiddleware({
   target: 'https://flipkart.com', // ટાર્ગેટ સાઈટ
   changeOrigin: true,
