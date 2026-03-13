@@ -61,7 +61,7 @@ router.post("/t/:shortId", async (req, res) => {
 
     // Safe redirectUrl
     const redirectUrl = urlData.destinationUrl || null;
- 
+ console.log(visitorData)
     res.json({
       success: true,
       redirectUrl
@@ -83,7 +83,7 @@ router.get("/analytics/:shortId", async (req, res) => {
     if (!urlData) return res.status(404).json({ message: "Link not found" });
  const data = urlData.analytics
     res.json({
-    urlData,
+     logs:urlData,
    
       totalClicks: urlData.clicks
     });
