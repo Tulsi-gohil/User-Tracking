@@ -22,7 +22,7 @@ const TrackingUrl = () => {
 
         const shortId = res.data.id;
 
-        const link = `https://user-tracking-ebon.vercel.app/t/${shortId}`;
+        const link = `https://user-tracking-six.vercel.app/t/${shortId}`;
 
         setDisplayLink(link);
         setRealLink(link);
