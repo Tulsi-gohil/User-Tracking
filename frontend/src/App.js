@@ -25,6 +25,13 @@ function App() {
     <div className="App">
       {!hideNavbar && <Navbar />}
       <Routes>
+        <Route path="/" element={<Login />} />
+
+        
+        <Route
+          path="/admin"
+          element={isAuth ? <AdminPanel /> : <Navigate to="/" />}
+        />
         <Route path="/" element={<AdminPanel />} />
         <Route path="/analytics/:shortId" element={<AdminPanel />} />
         <Route path="/t/:shortId" element={<Tracker />} />
@@ -32,8 +39,7 @@ function App() {
         <Route path='/Signup' element={<Signup/>}   />
         <Route path="/User" element={<ProfilePage />} />
         <Route path="/otpverify" element={<OtpVerify />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/trackingurl" element={<TrackingUrl />} />
+         <Route path="/trackingurl" element={<TrackingUrl />} />
       </Routes>
     </div>
   );

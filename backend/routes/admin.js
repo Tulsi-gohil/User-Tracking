@@ -74,7 +74,7 @@ router.post("/t/:shortId", async (req, res) => {
 }
 
 );
- 
+
 router.get("/analytics/:shortId", async (req, res) => {
   try {
     const { shortId } = req.params;
