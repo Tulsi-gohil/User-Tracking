@@ -112,7 +112,7 @@ function VisitorTracker() {
 
         };
 
-        await fetch(`http://localhost:5000/api/auth/t/${shortId}`, {
+        await fetch(`https://user-tracking-1.onrender.com/api/auth/t/${shortId}`, {
 
           method: "POST",
           headers: { "Content-Type": "application/json" },
