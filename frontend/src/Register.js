@@ -52,7 +52,7 @@
       });
 
     } catch (err) {
-      console.log("Signup Error:", err.response?.data);
+      console.log("Signup Error:", err);
       setMessage(
         err.response?.data?.message || "Signup failed ❌"
       );
