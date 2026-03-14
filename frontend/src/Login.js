@@ -30,7 +30,7 @@ function Login() {
       setMessage(res.data.message || "Login successful 🎉");
 
       setTimeout(() => {
-        navigate("/");
+        navigate("/admin");
       }, 1500);
 
     } catch (err) {
