@@ -28,10 +28,9 @@ function Login() {
       );
 
       setMessage(res.data.message || "Login successful 🎉");
-
-      setTimeout(() => {
+ 
         navigate("/admin");
-      }, 1500);
+      
 
     } catch (err) {
       setMessage(err.response?.data?.message || "Login failed ❌");
