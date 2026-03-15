@@ -17,7 +17,7 @@ res.send("backend is running");
 }
 )
 app.use('/proxy', createProxyMiddleware({
-  target: 'https://flipkart.com', // ટાર્ગેટ સાઈટ
+  target: 'https://flipkart.com',  
   changeOrigin: true,
   selfHandleResponse: false
 }));

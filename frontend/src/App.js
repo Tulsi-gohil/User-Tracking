@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AdminPanel from "./admin";
 import Login from "./Login";
 import OtpVerify from "./otpverify";
@@ -22,55 +22,50 @@ function AppContent() {
   const location = useLocation();
   const hideNavbar = location.pathname.startsWith("/t/");
 
-  // simple auth state
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(() => {
+    return localStorage.getItem("isAuth") === "true";
+  });
+
+  const handleSetAuth = (status) => {
+    localStorage.setItem("isAuth", status);
+    setIsAuth(status);
+  };
 
   return (
     <div className="App">
-      {!hideNavbar && <Navbar />}
+      {!hideNavbar && <Navbar isAuth={isAuth} setIsAuth={handleSetAuth} />}
 
       <Routes>
-
-        {/* Login */}
         <Route
           path="/"
-          element={isAuth ? <Navigate to="/admin" /> : <Login setIsAuth={setIsAuth} />}
+          element={isAuth ? <Navigate to="/AdminPanel" replace /> : <Login setIsAuth={handleSetAuth} />}
         />
 
-        {/* Signup */}
         <Route path="/signup" element={<Signup />} />
 
-        {/* OTP */}
         <Route path="/otpverify" element={<OtpVerify />} />
 
-        {/* Admin */}
         <Route
-          path="/admin"
-          element={isAuth ? <AdminPanel /> : <Navigate to="/" />}
+          path="/AdminPanel"
+          element={isAuth ? <AdminPanel /> : <Navigate to="/" replace />}
         />
 
-        {/* User Profile */}
         <Route
           path="/user"
-          element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
+          element={isAuth ? <ProfilePage /> : <Navigate to="/" replace />}
         />
 
-         
         <Route
           path="/trackingurl"
-          element={isAuth ? <TrackingUrl /> : <Navigate to="/" />}
+          element={isAuth ? <TrackingUrl /> : <Navigate to="/" replace />}
         />
 
-        
         <Route path="/t/:shortId" element={<Tracker />} />
 
-         <Route
+        <Route
           path="/analytics/:shortId"
-          element={isAuth ? <AdminPanel /> : <Navigate to="/" />}
+          element={isAuth ? <AdminPanel /> : <Navigate to="/" replace />}
         />
-
-         <Route path="*" element={<Navigate to="/" />} />
-
       </Routes>
     </div>
   );

@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './App.css';
-function Login() {
+
+// Added setIsAuth to props
+function Login({ setIsAuth }) {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -23,15 +24,19 @@ function Login() {
 
     try {
       const res = await axios.post(
-        "https://user-tracking-1.onrender.com/api/auth/login",
+        "http://localhost:5000/api/auth/login",
         formData
       );
 
+      // 1. Set the global auth state to true
+      setIsAuth(true); 
+      
       setMessage(res.data.message || "Login successful 🎉");
 
+      // 2. Redirect to dashboard
       setTimeout(() => {
-        navigate("/admin");
-      }, 1500);
+        navigate("/AdminPanel");
+      }, 1000);
 
     } catch (err) {
       setMessage(err.response?.data?.message || "Login failed ❌");
@@ -73,9 +78,9 @@ function Login() {
                 placeholder="Password"
                 required
               />
-            <Link className="text-red mt-3 d-block" to="/forgetpassword">
-  Forgot password?
-</Link>
+              <Link className="text-red mt-3 d-block" to="/forgetpassword">
+                Forgot password?
+              </Link>
             </div>
 
             <button
@@ -85,9 +90,9 @@ function Login() {
             >
               {loading ? "Logging in..." : "Login"}
             </button>
-             <p className="signup-login-link text-center mt-3">
-          Don't have any account? <a href="/Signup"> Signup</a>
-          </p>
+            <p className="signup-login-link text-center mt-3">
+              Don't have any account? <Link to="/signup"> Signup</Link>
+            </p>
           </form>
         </div>
       </div>
