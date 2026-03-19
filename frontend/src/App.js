@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import AdminPanel from "./admin";
 import Login from "./Login";
 import OtpVerify from "./otpverify";
