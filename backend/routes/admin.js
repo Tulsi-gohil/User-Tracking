@@ -140,14 +140,27 @@ router.get("/api/analytics/:shortId", async (req, res) => {
 /*============ SIGNUP ================= */
 router.post("/signup", async (req, res) => {
   try {
-    const { name, email, password} = req.body;
+    const { name, email, password } = req.body;
     if (!name || !email || !password)
       return res.status(400).json({ message: "All fields required" });
 
+    // 1. Check if user already exists BEFORE doing anything
     const exists = await User.findOne({ email });
     if (exists)
       return res.status(400).json({ message: "Email already registered" });
 
+    // 2. Prepare OTP
+    const otp = Math.floor(100000 + Math.random() * 900000);
+
+    // 3. TRY SENDING EMAIL FIRST
+    // If this fails, it jumps to the 'catch' block and NO USER IS CREATED
+    await sendEmail({
+      to: email,
+      subject: "Email Verification OTP",
+      html: `<h2>Your OTP is ${otp}</h2>`
+    });
+
+    // 4. IF EMAIL SUCCESS: Hash password and Save User
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
       name,
@@ -156,25 +169,23 @@ router.post("/signup", async (req, res) => {
       isVerified: false
     });
 
-    const otp = Math.floor(100000 + Math.random() * 900000);
+    // 5. Store OTP in memory/cache
     otpStore[email] = {
       otp,
       expires: Date.now() + 10 * 60 * 1000
     };
 
-    await sendEmail({
-      to: email,
-      subject: "Email Verification OTP",
-      html: `<h2>Your OTP is ${otp}</h2>`
-    });
-
     res.status(201).json({
       success: true,
       message: "Signup successful. OTP sent to email."
     });
+
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Signup failed" });
+    console.error("Signup/Email Error:", err);
+    // Since User.create wasn't called yet, no "fake" user is left in the DB
+    res.status(500).json({ 
+      message: "Signup failed: Could not send verification email. Please check your email address." 
+    });
   }
 });
 
