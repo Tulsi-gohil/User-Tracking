@@ -40,8 +40,8 @@ function AppContent() {
           path="/"
           element={isAuth ? <Navigate to="/Adminpanel" replace /> : <Login setIsAuth={handleSetAuth} />}
         />
-
-        <Route path="/signup" element={<Signup />} />
+      <Route path="/Login" element={<Login/>}  />
+            <Route path="/signup" element={<Signup />} />
 
         <Route path="/otpverify" element={<OtpVerify />} />
 
