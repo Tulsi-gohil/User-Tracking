@@ -38,7 +38,7 @@ function AppContent() {
       <Routes>
         <Route
           path="/"
-          element={isAuth ? <Navigate to="/admin" replace /> : <Login setIsAuth={handleSetAuth} />}
+          element={isAuth ? <Navigate to="/Adminpanel" replace /> : <Login setIsAuth={handleSetAuth} />}
         />
 
         <Route path="/signup" element={<Signup />} />
