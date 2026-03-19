@@ -33,7 +33,7 @@ function Login({ setIsAuth }) {
       setMessage(res.data.message || "Login successful 🎉");
 
        setTimeout(() => {
-        navigate("/AdminPanel");
+        navigate("/admin");
       }, 1000);
 
     } catch (err) {
