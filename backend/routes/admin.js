@@ -152,16 +152,13 @@ router.post("/signup", async (req, res) => {
     // 2. Prepare OTP
     const otp = Math.floor(100000 + Math.random() * 900000);
 
-    // 3. TRY SENDING EMAIL FIRST
-    // If this fails, it jumps to the 'catch' block and NO USER IS CREATED
-    await sendEmail({
+     await sendEmail({
       to: email,
       subject: "Email Verification OTP",
       html: `<h2>Your OTP is ${otp}</h2>`
     });
 
-    // 4. IF EMAIL SUCCESS: Hash password and Save User
-    const hashedPassword = await bcrypt.hash(password, 10);
+     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
       name,
       email,
@@ -182,8 +179,7 @@ router.post("/signup", async (req, res) => {
 
   } catch (err) {
     console.error("Signup/Email Error:", err);
-    // Since User.create wasn't called yet, no "fake" user is left in the DB
-    res.status(500).json({ 
+     res.status(500).json({ 
       message: "Signup failed: Could not send verification email. Please check your email address." 
     });
   }
