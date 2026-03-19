@@ -140,7 +140,7 @@ router.get("/api/analytics/:shortId", async (req, res) => {
 /*============ SIGNUP ================= */
 router.post("/signup", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password} = req.body;
     if (!name || !email || !password)
       return res.status(400).json({ message: "All fields required" });
 
