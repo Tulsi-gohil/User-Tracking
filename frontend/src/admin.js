@@ -21,9 +21,9 @@ export default function AdminPanel() {
     };
 
     fetchData();
-    const interval = setInterval(fetchData, 2000); // Polling every 2 seconds
+     
 
-    return () => clearInterval(interval);
+   
   }, [shortId]);
 
    const activeEntry = stats.find((item) => item.shortId === selectedShortId);
@@ -50,7 +50,7 @@ export default function AdminPanel() {
                 <tr key={index}>
                   <td>{`https://user-tracking-six.vercel.app/t/${item.shortId}`}</td>
                   <td>{item.destinationUrl}</td>
-                  <td>{item.analytics?.length || 0}</td>
+                  <td>{item.clicks}</td>
                   <td>
                     <button onClick={() => setSelectedShortId(item.shortId)}>
                       {selectedShortId === item.shortId ? "Viewing..." : "View Details"}
