@@ -1,8 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./App.css";
 
-function Navbar() {
-  const isAuth = localStorage.getItem("isAuth") === "true";
+function Navbar({ isAuth, setIsAuth }) {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("isAuth");
+    setIsAuth(false);
+    navigate("/Login");
+  };
 
   return (
     <nav className="navbar navbar-expand-lg custom-navbar px-3">
@@ -36,27 +42,26 @@ function Navbar() {
             <Link className="nav-link text-white" to="/user">Profile</Link>
           </li>
 
-          <li className="nav-item">
-            <Link className="nav-link text-white" to="/Signup">Signup</Link>
-          </li>
+          {!isAuth && (
+            <li className="nav-item">
+              <Link className="nav-link text-white" to="/Signup">Signup</Link>
+            </li>
+          )}
 
-          {/* ✅ CONDITIONAL BUTTON */}
           <li className="nav-item">
             {isAuth ? (
-              <Link
-                className="nav-link text-danger"
-                to="/login"
-                onClick={() => localStorage.removeItem("isAuth")}
+              <button
+                className="nav-link text-danger bg-transparent border-0"
+                onClick={handleLogout}
               >
                 Logout
-              </Link>
+              </button>
             ) : (
               <Link className="nav-link text-white" to="/Login">
                 Login
               </Link>
             )}
           </li>
-
         </ul>
       </div>
     </nav>

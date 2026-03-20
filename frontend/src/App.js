@@ -27,7 +27,11 @@ function AppContent() {
   });
 
   const handleSetAuth = (status) => {
-    localStorage.setItem("isAuth", status);
+    if (status) {
+      localStorage.setItem("isAuth", "true");
+    } else {
+      localStorage.removeItem("isAuth");
+    }
     setIsAuth(status);
   };
 
@@ -38,10 +42,15 @@ function AppContent() {
       <Routes>
         <Route
           path="/"
-          element={isAuth ? <Navigate to="/Adminpanel" replace /> : <Login setIsAuth={handleSetAuth} />}
+          element={isAuth ? <Navigate to="/AdminPanel" replace /> : <Login setIsAuth={handleSetAuth} />}
         />
-      <Route path="/Login" element={<Login/>}  />
-            <Route path="/signup" element={<Signup />} />
+        
+        <Route 
+          path="/Login" 
+          element={isAuth ? <Navigate to="/AdminPanel" replace /> : <Login setIsAuth={handleSetAuth} />} 
+        />
+        
+        <Route path="/signup" element={<Signup />} />
 
         <Route path="/otpverify" element={<OtpVerify />} />
 
