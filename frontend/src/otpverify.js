@@ -29,7 +29,7 @@ function OtpVerify() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/verifyOtp",
+        "https://user-tracking-1.onrender.com/api/auth/verifyOtp",
         { email, otp }
       );
 
