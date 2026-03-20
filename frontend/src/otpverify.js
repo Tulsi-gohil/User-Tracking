@@ -34,9 +34,7 @@ function OtpVerify() {
       );
 
       setMessage(res.data.message || "OTP Verified ✅");
-
-      // ✅ Clear stored email after success
-      localStorage.removeItem("otpEmail");
+ 
 
       setTimeout(() => navigate("/"), 1500);
     } catch (error) {

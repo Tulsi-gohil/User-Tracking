@@ -138,7 +138,7 @@ router.get("/api/analytics/:shortId", async (req, res) => {
 
 });
 /*============ SIGNUP ================= */
-router.post("/signup", async (req, res) => {
+router.post("/ragister", async (req, res) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password)

@@ -32,7 +32,7 @@
     try {
       const res = await axios.post(
         
-        "https://user-tracking-1.onrender.com/api/auth/signup",
+        "https://user-tracking-1.onrender.com/api/auth/ragister",
         {
           name: formData.name,
           email: formData.email,
