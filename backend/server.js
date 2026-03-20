@@ -5,7 +5,10 @@ const  dbcon =require("./libs/db")
  const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'https://user-tracking-six.vercel.app',
+  credentials: true
+}));
 app.use(express.json());
 app.use(useragent.express());  
 app.use(express.json());
