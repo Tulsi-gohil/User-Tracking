@@ -23,7 +23,7 @@ function Login({ setIsAuth }) {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://user-tracking-1.onrender.com/api/auth/login",
         formData
       );
 
