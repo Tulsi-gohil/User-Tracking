@@ -1,87 +1,87 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+// import { useState, useEffect } from "react";
+// import axios from "axios";
+// import { useLocation, useNavigate } from "react-router-dom";
 
-function OtpVerify() {
-  const navigate = useNavigate();
-  const location = useLocation();
+// function OtpVerify() {
+//   const navigate = useNavigate();
+//   const location = useLocation();
 
-  // ✅ Get email safely (state OR localStorage)
-  const email =
-    location.state?.email || localStorage.getItem("otpEmail");
+//   // ✅ Get email safely (state OR localStorage)
+//   const email =
+//     location.state?.email || localStorage.getItem("otpEmail");
 
-  const [otp, setOtp] = useState("");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+//   const [otp, setOtp] = useState("");
+//   const [message, setMessage] = useState("");
+//   const [loading, setLoading] = useState(false);
 
-  // ✅ Redirect if email is missing
-  useEffect(() => {
-    if (!email) {
-      setMessage("No email found. Please signup first.");
-      setTimeout(() => navigate("/signup"), 2000);
-    }
-  }, [email, navigate]);
+//   // ✅ Redirect if email is missing
+//   useEffect(() => {
+//     if (!email) {
+//       setMessage("No email found. Please signup first.");
+//       setTimeout(() => navigate("/signup"), 2000);
+//     }
+//   }, [email, navigate]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage("");
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
+//     setMessage("");
 
-    try {
-      const res = await axios.post(
-        "https://user-tracking-1.onrender.com/api/auth/verifyOtp",
-        { email, otp }
-      );
+//     try {
+//       const res = await axios.post(
+//         "https://user-tracking-1.onrender.com/api/auth/verifyOtp",
+//         { email, otp }
+//       );
 
-      setMessage(res.data.message || "OTP Verified ✅");
+//       setMessage(res.data.message || "OTP Verified ✅");
  
 
-      setTimeout(() => navigate("/"), 1500);
-    } catch (error) {
-      setMessage(
-        error.response?.data?.message || "Invalid OTP ❌"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+//       setTimeout(() => navigate("/"), 1500);
+//     } catch (error) {
+//       setMessage(
+//         error.response?.data?.message || "Invalid OTP ❌"
+//       );
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
-  return (
-    <div className="container d-flex justify-content-center align-items-center min-vh-100">
-      <div className="card p-4 shadow" style={{ maxWidth: "400px", width: "100%" }}>
-        <h2 className="text-center mb-3">Verify OTP</h2>
+//   return (
+//     <div className="container d-flex justify-content-center align-items-center min-vh-100">
+//       <div className="card p-4 shadow" style={{ maxWidth: "400px", width: "100%" }}>
+//         <h2 className="text-center mb-3">Verify OTP</h2>
 
-        {message && (
-          <div className="alert alert-info text-center">
-            {message}
-          </div>
-        )}
+//         {message && (
+//           <div className="alert alert-info text-center">
+//             {message}
+//           </div>
+//         )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label className="form-label">Enter OTP</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="6-digit OTP"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              required
-              maxLength={6} // Restrict input length
-            />
-          </div>
+//         <form onSubmit={handleSubmit}>
+//           <div className="mb-3">
+//             <label className="form-label">Enter OTP</label>
+//             <input
+//               type="text"
+//               className="form-control"
+//               placeholder="6-digit OTP"
+//               value={otp}
+//               onChange={(e) => setOtp(e.target.value)}
+//               required
+//               maxLength={6} // Restrict input length
+//             />
+//           </div>
 
-          <button
-            type="submit"
-            className="btn btn-primary w-100"
-            disabled={loading || !otp || otp.length !== 6} // Disable if invalid
-          >
-            {loading ? "Verifying..." : "Verify OTP"}
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-}
+//           <button
+//             type="submit"
+//             className="btn btn-primary w-100"
+//             disabled={loading || !otp || otp.length !== 6} // Disable if invalid
+//           >
+//             {loading ? "Verifying..." : "Verify OTP"}
+//           </button>
+//         </form>
+//       </div>
+//     </div>
+//   );
+// }
 
-export default OtpVerify;
+// export default OtpVerify;

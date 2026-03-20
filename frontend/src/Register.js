@@ -47,13 +47,10 @@
 
       setMessage(res.data.message || "Signup successful 🎉");
 
-      navigate("/otpverify", {
-        state: { email: formData.email },
-      });
+      navigate("/Adminpanel");
 
     } catch (err) {
-      console.log("Signup Error:", err);
-      setMessage(
+       setMessage(
         err.response?.data?.message || "Signup failed ❌"
       );
     } finally {

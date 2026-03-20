@@ -148,16 +148,7 @@ router.post("/ragister", async (req, res) => {
     const exists = await User.findOne({ email });
     if (exists)
       return res.status(400).json({ message: "Email already registered" });
-
-    // 2. Prepare OTP
-    const otp = Math.floor(100000 + Math.random() * 900000);
-
-     await sendEmail({
-      to: email,
-      subject: "Email Verification OTP",
-      html: `<h2>Your OTP is ${otp}</h2>`
-    });
-
+ 
      const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
       name,
@@ -165,49 +156,43 @@ router.post("/ragister", async (req, res) => {
       password: hashedPassword,
       isVerified: false
     });
-
-    // 5. Store OTP in memory/cache
-    otpStore[email] = {
-      otp,
-      expires: Date.now() + 10 * 60 * 1000
-    };
+ 
 
     res.status(201).json({
       success: true,
-      message: "Signup successful. OTP sent to email."
+      message: "Signup successful. "
     });
 
   } catch (err) {
     console.error("Signup/Email Error:", err);
      res.status(500).json({ 
-      message: "Signup failed: Could not send verification email. Please check your email address." 
+      message: "Signup failed:" 
     });
   }
 });
+ 
+// router.post("/verifyOtp", async (req, res) => {
+//   try {
+//     const { email, otp } = req.body;
+//     const record = otpStore[email];
 
-/* ================= VERIFY OTP ================= */
-router.post("/verifyOtp", async (req, res) => {
-  try {
-    const { email, otp } = req.body;
-    const record = otpStore[email];
+//     if (!record) return res.status(400).json({ message: "OTP not found" });
+//     if (Date.now() > record.expires) {
+//       delete otpStore[email];
+//       return res.status(400).json({ message: "OTP expired" });
+//     }
 
-    if (!record) return res.status(400).json({ message: "OTP not found" });
-    if (Date.now() > record.expires) {
-      delete otpStore[email];
-      return res.status(400).json({ message: "OTP expired" });
-    }
+//     if (Number(otp) !== record.otp)
+//       return res.status(400).json({ message: "Invalid OTP" });
 
-    if (Number(otp) !== record.otp)
-      return res.status(400).json({ message: "Invalid OTP" });
+//     await User.findOneAndUpdate({ email }, { isVerified: true });
+//     delete otpStore[email];
 
-    await User.findOneAndUpdate({ email }, { isVerified: true });
-    delete otpStore[email];
-
-    res.json({ success: true, message: "Email verified successfully" });
-  } catch (err) {
-    res.status(500).json({ message: "OTP verification failed" });
-  }
-});
+//     res.json({ success: true, message: "Email verified successfully" });
+//   } catch (err) {
+//     res.status(500).json({ message: "OTP verification failed" });
+//   }
+// });
 
 /* ================= LOGIN (Consolidated) ================= */
 router.post("/login", async (req, res) => {
