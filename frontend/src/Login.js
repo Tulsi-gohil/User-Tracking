@@ -29,7 +29,7 @@ function Login({ setIsAuth }) {
       );
 
        setIsAuth(true); 
-      
+      localStorage.setItem("isAuth", "true");
       setMessage(res.data.message || "Login successful 🎉");
 
        setTimeout(() => {

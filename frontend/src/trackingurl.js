@@ -40,8 +40,7 @@ const TrackingUrl = () => {
   const handleCopy = () => {
 
     navigator.clipboard.writeText(realLink);
-    alert("Copied!");
-
+    alert("Copied!"); 
   };
 
   return (

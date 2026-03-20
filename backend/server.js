@@ -5,15 +5,12 @@ const  dbcon =require("./libs/db")
  const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
-app.use(cors({
-  origin: 'https://user-tracking-six.vercel.app',
-  credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 app.use(useragent.express());  
 app.use(express.json());
 dbcon()
-// Routes
+
 app.use("/api/auth", require("./routes/admin"));
 app.get("/" ,( req,res) =>{
 res.send("backend is running");

@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 import "./App.css";
 
 function Navbar() {
+  const isAuth = localStorage.getItem("isAuth") === "true";
+
   return (
     <nav className="navbar navbar-expand-lg custom-navbar px-3">
       <Link className="navbar-brand fw-bold" to="/">
         Admin Panel
       </Link>
 
- 
       <button
         className="navbar-toggler"
         type="button"
@@ -21,25 +22,41 @@ function Navbar() {
         <span className="navbar-toggler-icon"></span>
       </button>
 
-      {/* MENU */}
       <div className="collapse navbar-collapse" id="nav">
         <ul className="navbar-nav ms-auto text-center">
           <li className="nav-item">
-            <Link className="nav-link text-white" to="/"> Dashboard</Link>
+            <Link className="nav-link text-white" to="/">Dashboard</Link>
           </li>
-           <li className="nav-item">
-            <Link className="nav-link text-white" to="/trackingurl"> Tracking Url</Link>
+
+          <li className="nav-item">
+            <Link className="nav-link text-white" to="/trackingurl">Tracking Url</Link>
           </li>
-         <li className="nav-item">
-            <Link className="nav-link text-white" to="/user"> profile</Link>
+
+          <li className="nav-item">
+            <Link className="nav-link text-white" to="/user">Profile</Link>
           </li>
+
           <li className="nav-item">
             <Link className="nav-link text-white" to="/Signup">Signup</Link>
           </li>
+
+          {/* ✅ CONDITIONAL BUTTON */}
           <li className="nav-item">
-            <Link className="nav-link text-white" to="/Login">Login</Link>
+            {isAuth ? (
+              <Link
+                className="nav-link text-danger"
+                to="/login"
+                onClick={() => localStorage.removeItem("isAuth")}
+              >
+                Logout
+              </Link>
+            ) : (
+              <Link className="nav-link text-white" to="/Login">
+                Login
+              </Link>
+            )}
           </li>
-          
+
         </ul>
       </div>
     </nav>
@@ -47,4 +64,3 @@ function Navbar() {
 }
 
 export default Navbar;
- 
