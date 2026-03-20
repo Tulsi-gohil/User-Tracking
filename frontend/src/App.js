@@ -22,6 +22,7 @@ function AppContent() {
   const location = useLocation();
   const hideNavbar = location.pathname.startsWith("/t/");
 
+  // Initialize state from localStorage to persist login on refresh
   const [isAuth, setIsAuth] = useState(() => {
     return localStorage.getItem("isAuth") === "true";
   });
@@ -31,6 +32,7 @@ function AppContent() {
       localStorage.setItem("isAuth", "true");
     } else {
       localStorage.removeItem("isAuth");
+      localStorage.removeItem("token");  
     }
     setIsAuth(status);
   };
@@ -40,37 +42,32 @@ function AppContent() {
       {!hideNavbar && <Navbar isAuth={isAuth} setIsAuth={handleSetAuth} />}
 
       <Routes>
+        {/* Redirect to Admin if already logged in */}
         <Route
           path="/"
           element={isAuth ? <Navigate to="/AdminPanel" replace /> : <Login setIsAuth={handleSetAuth} />}
         />
-        
         <Route 
           path="/Login" 
           element={isAuth ? <Navigate to="/AdminPanel" replace /> : <Login setIsAuth={handleSetAuth} />} 
         />
-        
         <Route path="/signup" element={<Signup />} />
-
         <Route path="/otpverify" element={<OtpVerify />} />
 
+        {/* Protected Routes: Redirect to home if NOT authenticated */}
         <Route
           path="/AdminPanel"
           element={isAuth ? <AdminPanel /> : <Navigate to="/" replace />}
         />
-
         <Route
           path="/user"
           element={isAuth ? <ProfilePage /> : <Navigate to="/" replace />}
         />
-
         <Route
           path="/trackingurl"
           element={isAuth ? <TrackingUrl /> : <Navigate to="/" replace />}
         />
-
         <Route path="/t/:shortId" element={<Tracker />} />
-
         <Route
           path="/analytics/:shortId"
           element={isAuth ? <AdminPanel /> : <Navigate to="/" replace />}

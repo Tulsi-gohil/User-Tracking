@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate, Link } from 'react-router-dom';
 import './App.css';
 
-// Added setIsAuth to props
 function Login({ setIsAuth }) {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -24,18 +23,21 @@ function Login({ setIsAuth }) {
 
     try {
       const res = await axios.post(
-        "https://user-tracking-1.onrender.com/api/auth/login",
+        "http://localhost:5000/api/auth/login",
         formData
       );
 
-       setIsAuth(true); 
-      localStorage.setItem("isAuth", "true");
-      setMessage(res.data.message || "Login successful 🎉");
+      // Check for token in response
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token); // Store the real JWT token
+        localStorage.setItem("isAuth", "true");
+        setIsAuth(true);
+        setMessage("Login successful 🎉");
 
-       setTimeout(() => {
-        navigate("/Adminpanel");
-      }, 1000);
-
+        setTimeout(() => {
+          navigate("/AdminPanel");
+        }, 1000);
+      }
     } catch (err) {
       setMessage(err.response?.data?.message || "Login failed ❌");
     } finally {

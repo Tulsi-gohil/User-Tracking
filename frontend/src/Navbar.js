@@ -5,16 +5,13 @@ function Navbar({ isAuth, setIsAuth }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("isAuth");
-    setIsAuth(false);
+    setIsAuth(false); // This triggers the cleanup in App.js
     navigate("/Login");
   };
 
   return (
     <nav className="navbar navbar-expand-lg custom-navbar px-3">
-      <Link className="navbar-brand fw-bold" to="/">
-        Admin Panel
-      </Link>
+      <Link className="navbar-brand fw-bold" to="/">Admin Panel</Link>
 
       <button
         className="navbar-toggler"
@@ -33,33 +30,30 @@ function Navbar({ isAuth, setIsAuth }) {
           <li className="nav-item">
             <Link className="nav-link text-white" to="/">Dashboard</Link>
           </li>
-
           <li className="nav-item">
             <Link className="nav-link text-white" to="/trackingurl">Tracking Url</Link>
           </li>
-
           <li className="nav-item">
             <Link className="nav-link text-white" to="/user">Profile</Link>
           </li>
 
+          {/* Only show Signup if NOT logged in */}
           {!isAuth && (
             <li className="nav-item">
-              <Link className="nav-link text-white" to="/Signup">Signup</Link>
+              <Link className="nav-link text-white" to="/signup">Signup</Link>
             </li>
           )}
 
           <li className="nav-item">
             {isAuth ? (
               <button
-                className="nav-link text-danger bg-transparent border-0"
+                className="nav-link text-danger bg-transparent border-0 w-100"
                 onClick={handleLogout}
               >
                 Logout
               </button>
             ) : (
-              <Link className="nav-link text-white" to="/Login">
-                Login
-              </Link>
+              <Link className="nav-link text-white" to="/Login">Login</Link>
             )}
           </li>
         </ul>
