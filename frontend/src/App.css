@@ -110,7 +110,14 @@ a:hover {
 }
 
 .navbar-toggler-icon {
-  background-color: #fff;
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    background-color: #f39c12;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
 }
 
 /* ===== Admin Panel Table ===== */
@@ -463,4 +470,18 @@ body {
     width: 90%;
   }
 
+}
+.url {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+ }
+.admin-text {
+  text-align: center;
+    color: #f39c12;
+    font-size: 2rem;
+    padding: 19px;
+    margin-top: 92px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }

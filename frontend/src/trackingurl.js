@@ -45,8 +45,9 @@ const TrackingUrl = () => {
   };
 
   return (
-    <div>
-
+  <>  
+   <div className='admin-text'> <h2> Create Tracking Url</h2></div>
+  <div className='url'>
       <input
         type="text"
         value={inputUrl}
@@ -73,8 +74,8 @@ const TrackingUrl = () => {
       )}
 
     </div>
-  );
-
-};
+ 
+</>
+ )};
 
 export default TrackingUrl;
