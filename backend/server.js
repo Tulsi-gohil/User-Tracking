@@ -3,6 +3,7 @@ const cors = require("cors");
 const useragent = require("express-useragent");
 const  dbcon =require("./libs/db")
  const { createProxyMiddleware } = require('http-proxy-middleware');
+require("dotenv").config();
 
 const app = express();
 app.use(cors({
@@ -24,4 +25,8 @@ app.use('/proxy', createProxyMiddleware({
   changeOrigin: true,
   selfHandleResponse: false
 }));
-app.listen(5000, () => console.log("Server running on port 5000"));
+ const PORT= process.env.PORT
+app.listen(PORT
+, '0.0.0.0', () => {
+    console.log(`Server running on port ${PORT}`);
+});
