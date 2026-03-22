@@ -59,17 +59,17 @@ const TrackingUrl = () => {
       </button>
 </div>
       {displayLink && (
-
-        <div>
+<div>
+        <div className='trackingurl'>
 
           <p>Tracking Link: {displayLink}</p>
-
-          <button onClick={handleCopy}>
+</div>
+          <button className='button-url' onClick={handleCopy}>
             Copy Tracking Link
           </button>
 
-        </div>
-
+      
+</div>
       )}
 
      

@@ -485,3 +485,11 @@ body {
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+.trackingurl{
+display: flex;
+justify-content:center
+}
+.button-url{
+display: flex;
+justify-content: center;
+}
