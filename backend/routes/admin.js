@@ -200,15 +200,14 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
-    if (!user) return res.status(404).json({ message: "User not found" });
-    if (!user.isVerified) return res.status(401).json({ message: "Verify email first" });
+    if (!user) return res.status(404).json({ message: "User not found" }); 
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(401).json({ message: "Invalid credentials" });
 
     const token = jwt.sign(
       { id: user._id },
-      process.env.JWT_SECRET || 'fallback_secret', // Added fallback
+      process.env.JWT_SECRET || 'fallback_secret', 
       { expiresIn: "7d" }
     );
 
