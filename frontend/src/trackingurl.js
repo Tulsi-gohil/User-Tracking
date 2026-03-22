@@ -57,7 +57,7 @@ const TrackingUrl = () => {
       <button onClick={handleGenerate}>
         Generate
       </button>
-
+</div>
       {displayLink && (
 
         <div>
@@ -72,7 +72,7 @@ const TrackingUrl = () => {
 
       )}
 
-    </div>
+     
  
 </>
  )};
