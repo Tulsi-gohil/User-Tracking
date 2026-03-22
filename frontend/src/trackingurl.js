@@ -64,9 +64,11 @@ const TrackingUrl = () => {
 
           <p>Tracking Link: {displayLink}</p>
 </div>
-          <button className='button-url' onClick={handleCopy}>
+
+<div className='button-url'> <button  onClick={handleCopy}>
             Copy Tracking Link
-          </button>
+          </button></div>
+         
 
       
 </div>
