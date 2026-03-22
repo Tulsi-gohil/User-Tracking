@@ -17,8 +17,13 @@ res.send("backend is running");
 }
 )
 app.use('/proxy', createProxyMiddleware({
-  target: 'https://flipkart.com',  
+   
+  target: 'https://flipkart.com', 
   changeOrigin: true,
-  selfHandleResponse: false
+  
+  router: (req) => {
+    return req.query.redirectUrl; 
+  }
 }));
+
 app.listen(5000, () => console.log("Server running on port 5000"));
