@@ -30,8 +30,7 @@
     setMessage("");
 
     try {
-     const token = localStorage.getItem("token")
-
+ 
       const res = await axios.post(
         
         "https://user-tracking-1.onrender.com/api/auth/ragister",
