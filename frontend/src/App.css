@@ -518,15 +518,16 @@ justify-content: center;
 .device-box img {
   display: block;
   margin-bottom: 10px;
+
   border-radius: 6px;
-  cursor: zoom-in; 
+   cursor: zoom-in; 
 }
 
 .device-box p {
   margin: 5px 0;
   font-size: 14px;
-  color: #444;
-}
+  text-align: center;
+ }
 
 .modal-overlay {
   position: fixed;
