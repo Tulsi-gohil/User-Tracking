@@ -19,7 +19,7 @@ const TrackingUrl = () => {
         },
         {
           headers: {
-            Authorization: `bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

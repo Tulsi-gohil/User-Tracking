@@ -16,7 +16,7 @@ export default function AdminPanel() {
 
       fetch(`https://user-tracking-1.onrender.com/api/auth/analytics/${shortId}`, {
         headers: {
-          Authorization: `bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       })
         .then((res) => res.json())
