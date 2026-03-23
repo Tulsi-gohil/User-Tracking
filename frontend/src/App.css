@@ -392,7 +392,7 @@ justify-content: center;
 /* Modal.css */
 .device-box {
   background: #33333377;
-  border: 1px solid #cdc3c3;  
+  border: 1px solid #000000;  
   border-radius: 10px;
   padding: 25px;
   margin-bottom: 20px;
@@ -402,7 +402,7 @@ justify-content: center;
   width: 38vh;
 }
 .log{
-  gap:10px
+  gap:24px
 }
 /* Hover effect to make it feel interactive */
 .device-box:hover {
@@ -422,7 +422,6 @@ justify-content: center;
 .device-box p {
   margin: 5px 0;
   font-size: 14px;
-  text-align: center;
  }
 
 .modal-overlay {
@@ -450,7 +449,7 @@ justify-content: center;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 .close-btn {
-    margin-top: 15px;
+    margin-top: -29px;
     padding: 3px;
     background-color: #ff4d4d;
     color: white;
