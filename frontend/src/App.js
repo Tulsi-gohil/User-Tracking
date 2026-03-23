@@ -7,7 +7,6 @@ import "./App.css";
 import Navbar from "./Navbar";
 import ProfilePage from "./user";
 import TrackingUrl from "./trackingurl";
-import Tracker from "./Track";
 import Signup from "./Register";
 
 function App() {
