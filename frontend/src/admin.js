@@ -96,7 +96,7 @@ export default function AdminPanel() {
               alignItems: "center",
             }}
           >
-            <button onClick={() => setSelectedShortId(null)}>✕</button>
+            <button onClick={() => setSelectedShortId(null)} className="btn-close">✕</button>
           </div>
       <div className="log row py-5">
           {visitorLogs.length > 0 ? (
