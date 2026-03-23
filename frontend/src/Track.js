@@ -103,8 +103,7 @@ function VisitorTracker() {
     captureVisitorData();
 
     const handleExit = () => {
-        const token = localStorage.getItem("token")
-
+ 
       navigator.sendBeacon(
         `https://user-tracking-1.onrender.com/api/auth/exit/${shortId}`,
         JSON.stringify({ exitTime: new Date() })

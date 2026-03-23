@@ -7,8 +7,7 @@ export default function AdminPanel() {
   const [stats, setStats] = useState([]);
   const [selectedShortId, setSelectedShortId] = useState(null);
   const [selectedVisitor, setSelectedVisitor] = useState(null);
-  const [expandedImage, setExpandedImage] = useState(null);
-
+ 
 
   useEffect(() => {
     const fetchData = () => {
@@ -114,8 +113,7 @@ export default function AdminPanel() {
                       src={log.cameraImage}
                       alt="User"
                       width="150"
-                     onClick={() => setExpandedImage(log.cameraImage)} 
-
+ 
                       style={{ borderRadius: "8px" }}
                     />
                   ) : (
