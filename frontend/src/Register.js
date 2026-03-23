@@ -30,6 +30,8 @@
     setMessage("");
 
     try {
+     const token = localStorage.getItem("token")
+
       const res = await axios.post(
         
         "https://user-tracking-1.onrender.com/api/auth/ragister",
@@ -40,8 +42,8 @@
         },
         {
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+           }
         }
       );
 
@@ -56,10 +58,7 @@
     } finally {
       setLoading(false);
     }
-  };
-
-
-
+  }; 
     return (
       <div className="container d-flex justify-content-center align-items-center min-vh-100">
         <div

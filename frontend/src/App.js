@@ -67,7 +67,6 @@ function AppContent() {
           path="/trackingurl"
           element={isAuth ? <TrackingUrl /> : <Navigate to="/" replace />}
         />
-        <Route path="/t/:shortId" element={<Tracker />} />
         <Route
           path="/analytics/:shortId"
           element={isAuth ? <AdminPanel /> : <Navigate to="/" replace />}

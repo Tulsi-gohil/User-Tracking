@@ -12,15 +12,16 @@ const analyticsSchema = new mongoose.Schema({
   platform: String,
   screen: String,
   page: String,
-  cameraImage: String, // renamed from "image" to match frontend
+  cameraImage: String,  
   timestamp: { type: Date, default: Date.now }
-}, { _id: false }); // optional: prevents extra _id for each subdocument
+}, { _id: false }); 
 
 const urlSchema = new mongoose.Schema({
   shortId: { type: String, required: true, unique: true },
   destinationUrl: { type: String, required: true },
   clicks: { type: Number, default: 0 },
-  analytics: [analyticsSchema] // correct array of subdocuments
+  user:  { type: mongoose.Schema.Types.ObjectId, ref: 'ragister', required: true },
+  analytics: [analyticsSchema]  
 }, { timestamps: true });
 
 module.exports = mongoose.model('Url', urlSchema);

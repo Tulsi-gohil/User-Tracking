@@ -9,12 +9,11 @@ const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/sendEmail");
 const useragent = require("express-useragent");
 const {nanoid} = require("nanoid")
+const auth =require("../utils/auth")
 router.use(useragent.express());
 const otpStore = {};  
-// =========================
-// GENERATE TRACKING URL
-// =========================
-router.post("/generate", async (req, res) => {
+
+router.post("/generate",auth, async (req, res) => {
   try {
 
     const { destinationUrl } = req.body;
@@ -24,6 +23,7 @@ router.post("/generate", async (req, res) => {
     const url = await Url.create({
       shortId: shortId,
       destinationUrl: destinationUrl,
+      user: req.user,
       clicks: 0,
       analytics: []
     });
@@ -37,15 +37,12 @@ router.post("/generate", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
  
-
-router.post("/t/:shortId", async (req, res) => {
+router.post("/t/:shortId", auth ,async (req, res) => {
   try {
-    const { shortId } = req.params;
+    const { shortId} = req.params;
     const visitorData = req.body;
-
-    // Ensure Url exists
+ 
     const urlData = await Url.findOneAndUpdate(
       { shortId },
       {
@@ -61,7 +58,7 @@ router.post("/t/:shortId", async (req, res) => {
 
     // Safe redirectUrl
     const redirectUrl = urlData.destinationUrl || null;
- console.log(visitorData)
+ 
     res.json({
       success: true,
       redirectUrl
@@ -74,26 +71,32 @@ router.post("/t/:shortId", async (req, res) => {
 }
 
 );
-
-router.get("/analytics/:shortId", async (req, res) => {
+router.get("/analytics/:shortId", auth, async (req, res) => {
   try {
     const { shortId } = req.params;
-    const urlData = await Url.find();
+ 
+    const urlData = await Url.find({ user: req.user });
 
-    if (!urlData) return res.status(404).json({ message: "Link not found" });
- const data = urlData.analytics
+    if (!urlData || urlData.length === 0) {
+      return res.status(404).json({ message: "No data found" });
+    }
+
     res.json({
-     logs:urlData,
-   
-      totalClicks: urlData.clicks
+      logs: urlData.map((url) => ({
+        shortId: url.shortId,
+        destinationUrl: url.destinationUrl,
+        clicks: url.clicks,
+        user: url.user,
+        analytics: url.analytics
+      }))
     });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to fetch analytics" });
   }
 });
-
-router.post("/exit/:shortId", async (req, res) => {
+router.post("/exit/:shortId",auth, async (req, res) => {
   try {
     const { shortId } = req.params;
     const { exitTime } = req.body;
@@ -137,15 +140,14 @@ router.get("/api/analytics/:shortId", async (req, res) => {
   }
 
 });
-/*============ SIGNUP ================= */
+ 
 router.post("/ragister", async (req, res) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password)
       return res.status(400).json({ message: "All fields required" });
 
-    // 1. Check if user already exists BEFORE doing anything
-    const exists = await User.findOne({ email });
+     const exists = await User.findOne({ email });
     if (exists)
       return res.status(400).json({ message: "Email already registered" });
  
@@ -170,31 +172,7 @@ router.post("/ragister", async (req, res) => {
     });
   }
 });
- 
-// router.post("/verifyOtp", async (req, res) => {
-//   try {
-//     const { email, otp } = req.body;
-//     const record = otpStore[email];
-
-//     if (!record) return res.status(400).json({ message: "OTP not found" });
-//     if (Date.now() > record.expires) {
-//       delete otpStore[email];
-//       return res.status(400).json({ message: "OTP expired" });
-//     }
-
-//     if (Number(otp) !== record.otp)
-//       return res.status(400).json({ message: "Invalid OTP" });
-
-//     await User.findOneAndUpdate({ email }, { isVerified: true });
-//     delete otpStore[email];
-
-//     res.json({ success: true, message: "Email verified successfully" });
-//   } catch (err) {
-//     res.status(500).json({ message: "OTP verification failed" });
-//   }
-// });
-
-/* ================= LOGIN (Consolidated) ================= */
+  
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -221,7 +199,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-/* ================= STATS & USERS ================= */
 router.get("/users", async (req, res) => {
   try {
     const users = await User.find({}).sort({ timestamp: -1 });

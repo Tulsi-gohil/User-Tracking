@@ -493,3 +493,76 @@ justify-content:center
 display: flex;
 justify-content: center;
 }
+/* Modal.css */
+.device-box {
+  background: #33333377;
+  border: 1px solid #cdc3c3;  
+  border-radius: 10px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Soft shadow for "card" look */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: left;
+  width: 38vh;
+}
+.log{
+  gap:10px
+}
+/* Hover effect to make it feel interactive */
+.device-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #b0a5a5;
+}
+
+.device-box img {
+  display: block;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  cursor: zoom-in; 
+}
+
+.device-box p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #444;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: rgb(0, 0, 0);
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;   /* ✅ fixed */
+  max-height: 90vh;   /* ✅ fixed */
+  overflow-y: auto;   /* ✅ fixed */
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.close-btn {
+    margin-top: 15px;
+    padding: 3px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 116px;
+    cursor: pointer;
+}
+.close-btn:hover {
+  background-color: #e60000;
+}

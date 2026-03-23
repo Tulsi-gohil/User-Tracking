@@ -80,10 +80,13 @@ function VisitorTracker() {
           entryTime: new Date(),
         };
 
-         
+       const token = localStorage.getItem("token")
+
         const res = await fetch(`https://user-tracking-1.onrender.com/api/auth/t/${shortId}`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json" ,
+           Authorization:`bearer ${token}`
+          },
           body: JSON.stringify(visitorData),
         });
 
@@ -100,6 +103,8 @@ function VisitorTracker() {
     captureVisitorData();
 
     const handleExit = () => {
+        const token = localStorage.getItem("token")
+
       navigator.sendBeacon(
         `https://user-tracking-1.onrender.com/api/auth/exit/${shortId}`,
         JSON.stringify({ exitTime: new Date() })

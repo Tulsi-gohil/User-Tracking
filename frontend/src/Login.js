@@ -8,7 +8,7 @@ function Login({ setIsAuth }) {
   const [formData, setFormData] = useState({
     email: "",
     password: ""
-  }); 
+  });
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -22,9 +22,12 @@ function Login({ setIsAuth }) {
     setMessage("");
 
     try {
+      const token =localStorage.getItem("token")
       const res = await axios.post(
         "https://user-tracking-1.onrender.com/api/auth/login",
-        formData
+        formData,
+        
+        
       );
 
       // Check for token in response

@@ -10,11 +10,17 @@ const TrackingUrl = () => {
   const handleGenerate = async () => {
 
     try {
+      const token = localStorage.getItem("token")
 
       const res = await axios.post(
         "https://user-tracking-1.onrender.com/api/auth/generate",
         {
           destinationUrl: inputUrl
+        },
+        {
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
         }
       );
 
@@ -40,43 +46,44 @@ const TrackingUrl = () => {
   const handleCopy = () => {
 
     navigator.clipboard.writeText(realLink);
-    alert("Copied!"); 
+    alert("Copied!");
   };
 
   return (
-  <>  
-   <div className='admin-text'> <h2> Create Tracking Url</h2></div>
-  <div className='url'>
-      <input
-        type="text"
-        value={inputUrl}
-        onChange={(e) => setInputUrl(e.target.value)}
-        placeholder="Enter domain (e.g. https://flipkart.com)"
-      />
+    <>
+      <div className='admin-text'> <h2> Create Tracking Url</h2></div>
+      <div className='url'>
+        <input
+          type="text"
+          value={inputUrl}
+          onChange={(e) => setInputUrl(e.target.value)}
+          placeholder="Enter domain (e.g. https://flipkart.com)"
+        />
 
-      <button onClick={handleGenerate}>
-        Generate
-      </button>
-</div>
+        <button onClick={handleGenerate}>
+          Generate
+        </button>
+      </div>
       {displayLink && (
-<div>
-        <div className='trackingurl'>
+        <div>
+          <div className='trackingurl'>
 
-          <p>Tracking Link: {displayLink}</p>
-</div>
+            <p>Tracking Link: {displayLink}</p>
+          </div>
 
-<div className='button-url'> <button  onClick={handleCopy}>
+          <div className='button-url'> <button onClick={handleCopy}>
             Copy Tracking Link
           </button></div>
-         
 
-      
-</div>
+
+
+        </div>
       )}
 
-     
- 
-</>
- )};
+
+
+    </>
+  )
+};
 
 export default TrackingUrl;
