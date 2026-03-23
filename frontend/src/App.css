@@ -305,9 +305,7 @@ body {
 /* ===== MODAL CONTENT ===== */
  
  
-.btn-close{
-  background-color: #f39c12;
-}
+ 
 /* ===== RESPONSIVE ===== */
 /* Container */
 .profile-container {
@@ -448,7 +446,7 @@ justify-content: center;
   text-align: center;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-.close-btn {
+.close-btn,.btn-close {
     margin-top: -29px;
     padding: 3px;
     background-color: #ff4d4d;
