@@ -80,12 +80,11 @@ function VisitorTracker() {
           entryTime: new Date(),
         };
 
-       const token = localStorage.getItem("token")
-
+ 
         const res = await fetch(`https://user-tracking-1.onrender.com/api/auth/t/${shortId}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" ,
-           Authorization:`Bearer ${token}`
+       
           },
           body: JSON.stringify(visitorData),
         });

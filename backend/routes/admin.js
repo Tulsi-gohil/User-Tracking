@@ -38,7 +38,7 @@ router.post("/generate",auth, async (req, res) => {
   }
 });
  
-router.post("/t/:shortId", auth ,async (req, res) => {
+router.post("/t/:shortId" ,async (req, res) => {
   try {
     const { shortId} = req.params;
     const visitorData = req.body;
@@ -96,7 +96,7 @@ router.get("/analytics/:shortId", auth, async (req, res) => {
     res.status(500).json({ message: "Failed to fetch analytics" });
   }
 });
-router.post("/exit/:shortId",auth, async (req, res) => {
+router.post("/exit/:shortId", async (req, res) => {
   try {
     const { shortId } = req.params;
     const { exitTime } = req.body;
