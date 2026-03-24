@@ -178,6 +178,19 @@ input {
 .button1 {
     padding: 8px 10px;
     border: none;
+    display: inline;
+    align-items: right;
+    border-radius: 31px;
+    font-size: 10px;
+    background-color: #f39d129a;
+    color: #fff;
+    cursor: pointer;
+    margin-bottom: 10px;
+   
+}
+/* .button-url{
+    padding: 8px 10px;
+    border: none;
     display: flex;
     align-items: right;
     border-radius: 31px;
@@ -186,7 +199,8 @@ input {
     color: #fff;
     cursor: pointer;
     margin-bottom: 10px;
-}
+    margin-left: 160px;
+} */
 
 button:hover {
   background-color: #e67e22;
@@ -331,12 +345,6 @@ body {
   background: #2a2a2a;
 }
  
-/* ===== MODAL CONTENT ===== */
- 
- 
- 
-/* ===== RESPONSIVE ===== */
-/* Container */
 .profile-container {
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -392,6 +400,30 @@ body {
   .modal-box {
     width: 90%;
   }
+ 
+  .trackurl {
+    flex-direction: column;   /* stack items */
+    align-items: center;     /* full width */
+    gap: 10px;
+  }
+
+  .trackingurl {
+    width: 100%;
+    margin-left:130px;
+  }
+
+  .button-url {
+    width: 30%;              /* full width button */
+    text-align: center;
+    font-size: 14px;          /* bigger for touch */
+  }
+
+  .button3 {
+    width: auto;              /* remove fixed vh width */
+    justify-content: center;
+    font-size: 14px;
+  }
+
 
 }
 .url {
@@ -409,14 +441,23 @@ body {
     letter-spacing: 1px;
 }
 .trackingurl{
-display: flex;
-justify-content:center
-}
-.button-url{
-display: flex;
-justify-content: center;
-}
+ margin-right: 10px;
+margin-top: 10px;
  
+}
+.button-url {
+
+ border-radius: 31px;
+    font-size: 10px;
+    background-color: #f39d129a;
+    border: none;
+    padding: 9px 8px;
+    color: #ffffff;
+ }
+ .trackurl{
+  display: flex;
+justify-content: center;
+ }
 .device-box {
   background: #33333377;
   border: 1px solid #000000;  
@@ -441,10 +482,14 @@ justify-content: center;
   justify-content: center;
   cursor: zoom-in; 
 }
-
+.bettery {
+    text-align: right;
+    margin-top: -23px;
+}
 .device-box p {
   margin: 5px 0;
-  font-size: 14px;
+  display: inline;
+  font-size: 12px;
  }
 
 .modal-overlay {
@@ -496,3 +541,16 @@ justify-content: center;
     border-radius: 116px;
     cursor: pointer;
 }
+.time{
+  display: inline;
+  margin-right: 95px;
+}
+.time p {
+  margin-top: 10px;
+
+}
+.texttime{
+   
+  font-size: 10px;
+}
+ 

