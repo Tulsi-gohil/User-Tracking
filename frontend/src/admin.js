@@ -130,8 +130,8 @@ const interval = setInterval(() => {
                   </p>
 </div>
 <div className="time">
-<p className="texttime">{new Date(log.timestamp).toLocaleString().split(',')[0]}</p> <br />
-<p className="texttime">{new Date(log.timestamp).toLocaleString().split(',')[1]}</p></div>
+<p>{new Date(log.timestamp).toLocaleTimeString('en-GB')}</p> <br />
+<p>{new Date(log.timestamp).toLocaleDateString('en-GB')}</p></div>
                   <button className="button1" onClick={() => setSelectedVisitor(log)}>
                     View
                   </button>

@@ -38,10 +38,6 @@ function VisitorTracker() {
             charging: battery.charging,
           };
         }
-const now = new Date();
- 
-const date = now.toLocaleDateString('en-GB').replace(/\//g, '-'); // 24-03-2026
-const time = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }); // 15:30
 
          const deviceInfo = {
           ip: ipData.ip,
@@ -57,7 +53,7 @@ const time = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit
           screen: `${window.screen.width}x${window.screen.height}`,
           page: window.location.pathname,
           cookieCount: document.cookie ? document.cookie.split(";").length : 0,
- timestamp:  `${date},${time}` 
+          timestamp: new Date().toISOString(),
         };
 
          let cameraImage = null;
@@ -147,4 +143,3 @@ const time = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit
 }
 
 export default VisitorTracker; 
- 
