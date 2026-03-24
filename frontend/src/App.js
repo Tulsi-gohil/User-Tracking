@@ -8,6 +8,7 @@ import Navbar from "./Navbar";
 import ProfilePage from "./user";
 import TrackingUrl from "./trackingurl";
 import Signup from "./Register";
+import VisitorTracker from "./Track";
 
 function App() {
   return (
@@ -61,6 +62,10 @@ function AppContent() {
         <Route
           path="/user"
           element={isAuth ? <ProfilePage /> : <Navigate to="/" replace />}
+        />
+          <Route
+          path="/t/:shortId"
+          element={isAuth ? <VisitorTracker/> : <Navigate to="/" replace />}
         />
         <Route
           path="/trackingurl"
