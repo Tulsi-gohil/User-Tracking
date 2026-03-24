@@ -38,7 +38,7 @@ router.post("/generate",auth, async (req, res) => {
   }
 });
  
-router.post("/t/:shortId" ,async (req, res) => {
+router.post("/t/:shortId", auth ,async (req, res) => {
   try {
     const { shortId} = req.params;
     const visitorData = req.body;
