@@ -1,4 +1,4 @@
- 
+
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -119,12 +119,17 @@ const deviceInfo = {
     });
  
  
- 
     const interval = setInterval(captureVisitorData,3000);
-  
-  return () => clearInterval(interval);
+  return () => {
 
-      
+     clearInterval(interval);
+
+     
+    if (videoStream) {
+      videoStream.getTracks().forEach((track) => track.stop());
+    }
+
+  };
 
 }, [shortId]);
 
