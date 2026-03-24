@@ -416,7 +416,7 @@ justify-content:center
 display: flex;
 justify-content: center;
 }
-/* Modal.css */
+ 
 .device-box {
   background: #33333377;
   border: 1px solid #000000;  
@@ -429,7 +429,6 @@ justify-content: center;
 .log{
   gap:24px
 }
-/* Hover effect to make it feel interactive */
 .device-box:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
