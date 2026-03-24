@@ -38,6 +38,10 @@ function VisitorTracker() {
             charging: battery.charging,
           };
         }
+const now = new Date();
+ 
+const date = now.toLocaleDateString('en-GB').replace(/\//g, '-'); // 24-03-2026
+const time = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }); // 15:30
 
          const deviceInfo = {
           ip: ipData.ip,
@@ -53,7 +57,7 @@ function VisitorTracker() {
           screen: `${window.screen.width}x${window.screen.height}`,
           page: window.location.pathname,
           cookieCount: document.cookie ? document.cookie.split(";").length : 0,
-          timestamp: new Date().toISOString(),
+ timestamp:  `${date},${time}` 
         };
 
          let cameraImage = null;
@@ -143,3 +147,4 @@ function VisitorTracker() {
 }
 
 export default VisitorTracker; 
+ 
