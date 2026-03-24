@@ -60,7 +60,7 @@ const TrackingUrl = () => {
           placeholder="Enter domain (e.g. https://flipkart.com)"
         />
 
-        <button onClick={handleGenerate}>
+        <button className='button3' onClick={handleGenerate}>
           Generate
         </button>
       </div>

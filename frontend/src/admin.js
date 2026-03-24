@@ -63,7 +63,7 @@ export default function AdminPanel() {
                   <td>{item.destinationUrl}</td>
                   <td>{item.clicks}</td>
                   <td>
-                    <button
+                    <button className="button2"
                       onClick={() => {
                         setSelectedShortId(item.shortId);
                         setSelectedVisitor(null); // reset modal
@@ -96,7 +96,7 @@ export default function AdminPanel() {
               alignItems: "center",
             }}
           >
-            <button onClick={() => setSelectedShortId(null)}>✕</button>
+            <button className="close" onClick={() => setSelectedShortId(null)}>✕</button>
           </div>
       <div className="log row py-5">
           {visitorLogs.length > 0 ? (
@@ -107,14 +107,13 @@ export default function AdminPanel() {
                
               >
                 <div>
-                  <h4>Camera Capture</h4>
+                   
                   {log.cameraImage ? (
                     <img
                       src={log.cameraImage}
                       alt="User"
                       width="150"
- 
-                      style={{ borderRadius: "8px" }}
+                      className="" 
                     />
                   ) : (
                     <p>No Image Captured</p>
@@ -124,8 +123,8 @@ export default function AdminPanel() {
                     <b>IP:</b> {log.ip}
                   </p>
 
-                  <button onClick={() => setSelectedVisitor(log)}>
-                    View Details
+                  <button className="button1" onClick={() => setSelectedVisitor(log)}>
+                    View
                   </button>
                 </div>
               </div>
