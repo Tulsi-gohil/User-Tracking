@@ -11,7 +11,7 @@ function Navbar({ isAuth, setIsAuth }) {
 
   return (
     <nav className="navbar navbar-expand-lg custom-navbar px-3">
-      <Link className="navbar-brand fw-bold" to="/">Admin Panel</Link>
+      <Link className="navbar-brand fw-bold " to="/">Admin Panel</Link>
 
       <button
         className="navbar-toggler"
@@ -37,8 +37,7 @@ function Navbar({ isAuth, setIsAuth }) {
             <Link className="nav-link text-white" to="/user">Profile</Link>
           </li>
 
-          {/* Only show Signup if NOT logged in */}
-          {!isAuth && (
+           {!isAuth && (
             <li className="nav-item">
               <Link className="nav-link text-white" to="/signup">Signup</Link>
             </li>

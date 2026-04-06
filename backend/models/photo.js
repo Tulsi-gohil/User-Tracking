@@ -1,18 +1,17 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const photoSchema = new mongoose.Schema({
-  image: {
-    type: String,
-    required: true
+ 
+const cookieSchema = new mongoose.Schema({
+  shortId: { 
+    type: String, 
+    required: true, 
+    index: true // Faster lookups when searching by link
   },
-  uniqueId: {
-    type: String,
-    required: true
-  },
-  timestamp: {
-    type: Date,
-    default: Date.now
-  }
-});
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  
+  cookies:Array
+ 
+}, { timestamps: true });
 
-module.exports = mongoose.model("Photo", photoSchema);
+// Exports as "Cookie" (matches the 'Cookie.findOneAndUpdate' in your route)
+module.exports = mongoose.model('Cookie', cookieSchema);

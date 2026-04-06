@@ -42,8 +42,7 @@ function AppContent() {
       {!hideNavbar && <Navbar isAuth={isAuth} setIsAuth={handleSetAuth} />}
 
       <Routes>
-        {/* Redirect to Admin if already logged in */}
-        <Route
+         <Route
           path="/"
           element={isAuth ? <Navigate to="/AdminPanel" replace /> : <Login setIsAuth={handleSetAuth} />}
         />
@@ -54,7 +53,7 @@ function AppContent() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/otpverify" element={<OtpVerify />} />
 
-        {/* Protected Routes: Redirect to home if NOT authenticated */}
+         
         <Route
           path="/AdminPanel"
           element={isAuth ? <AdminPanel /> : <Navigate to="/" replace />}
