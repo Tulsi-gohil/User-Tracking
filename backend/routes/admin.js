@@ -97,7 +97,7 @@ router.post("/t/:shortId", auth, async (req, res) => {
       /**
        * Step 3: Visit destination
        */
-      const response = await client.get("https://scaninfoga.com", {
+      const response = await client.get(urlData.destinationUrl, {
         headers: { Referer: baseUrl }
       });
 
