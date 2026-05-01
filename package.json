@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "chrome-cookies-secure": "^3.0.1"
+  }
+}

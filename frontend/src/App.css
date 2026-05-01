@@ -406,7 +406,7 @@ body {
   gap: 20px;
 }
 
-/* User card */
+ 
 .user-card {
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -421,7 +421,7 @@ body {
   box-shadow: 0 6px 10px rgba(0,0,0,0.15);
 }
 
-/* User info */
+ 
 .user-card p {
   margin: 5px 0;
 }
@@ -442,11 +442,11 @@ body {
   }
 
   .trackingurl {
-    width: 100%;
+    width:auto;
   }
 
   .button-url {
-    width: 100%;
+    width: auto;
   }
 
   .modal-content {
@@ -471,7 +471,6 @@ body {
     text-transform: uppercase;
     letter-spacing: 1px;
 }
-/* ===== PAGE TITLE ===== */
 .admin-text {
   text-align: center;
   margin-top: 80px;
@@ -522,7 +521,7 @@ body {
   transform: scale(1.05);
 }
 
-/* ===== OUTPUT SECTION ===== */
+ 
 .trackurl {
   display: flex;
   justify-content: center;
@@ -570,7 +569,10 @@ body {
   }
 
   .url input {
-    width: 100%;
+    width: 50%;
+  }
+  .button3{
+    width: auto;
   }
 }
 .device-box {

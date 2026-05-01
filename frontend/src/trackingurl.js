@@ -32,9 +32,7 @@ const TrackingUrl = () => {
 
         setDisplayLink(link);
         setRealLink(link);
-
       }
-
     } catch (err) {
 
       alert("Error: Check if backend is running");
@@ -44,7 +42,6 @@ const TrackingUrl = () => {
   };
 
   const handleCopy = () => {
-
     navigator.clipboard.writeText(realLink);
     alert("Copied!");
   };
@@ -74,14 +71,8 @@ const TrackingUrl = () => {
          <button className='button-url' onClick={handleCopy}>
             Copy Tracking Link
           </button> 
-
-
-
         </div>
       )}
-
-
-
     </>
   )
 };

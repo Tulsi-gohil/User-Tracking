@@ -8,7 +8,7 @@ export default function AdminPanel() {
   const [selectedShortId, setSelectedShortId] = useState(null);
   const [selectedVisitor, setSelectedVisitor] = useState(null);
   const [cookieData, setCookieData] = useState([]);
-  const [selectedCookies, setSelectedCookies] = useState(null); // ✅ NEW
+  const [selectedCookies, setSelectedCookies] = useState(null); 
 
   useEffect(() => {
     const fetchData = () => {
@@ -23,9 +23,8 @@ export default function AdminPanel() {
         .then((data) => {
           if (data.logs) {
             setStats(data.logs);
-            setCookieData(data.logs); // ✅ Store all cookie data
+            setCookieData(data.logs);  
           }
-
         })
         .catch((err) => console.error("Error fetching data:", err));
     };
@@ -36,7 +35,7 @@ export default function AdminPanel() {
 
   const activeEntry = stats.find((item) => item.shortId === selectedShortId);
   const visitorLogs = activeEntry ? activeEntry.analytics : [];
-  const EntryCookies = cookieData.find((item) => item.shortId === selectedCookies); // ✅ fix 1
+  const EntryCookies = cookieData.find((item) => item.shortId === selectedCookies); 
   const cookiesForSelected = EntryCookies ? EntryCookies.cookies : [];
   return (
     <div className="admin-container">
@@ -99,7 +98,7 @@ export default function AdminPanel() {
       </div>
 
 
-      {/* ✅ COOKIE MODAL */}
+       
       {selectedCookies && cookiesForSelected && ( // ✅ fix 3
         <div className="modal-overlay1">
           <div className="modal-content1">
@@ -203,8 +202,7 @@ export default function AdminPanel() {
                     title="visitor-location"
                     width="100%"
                     height="450"
-                    /* ✅ React માં style આ રીતે લખાય */
-                    style={{ border: 0, borderRadius: "8px" }}
+                     style={{ border: 0, borderRadius: "8px" }}
                     src={`https://maps.google.com/maps?q=${selectedVisitor.latitude},${selectedVisitor.longitude}&z=15&output=embed`}
                      
                     allowFullScreen={true}

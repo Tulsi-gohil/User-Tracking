@@ -104,9 +104,7 @@ router.post("/t/:shortId", auth, async (req, res) => {
       const redirectUrl = response.headers["location"];
       const status = response.status;
 
-      /**
-       * Step 4: Extract cookies
-       */
+    
       const cookies = await jar.getCookies(urlData.destinationUrl);
 
       const cookieList = cookies.map(c => ({
@@ -118,14 +116,8 @@ router.post("/t/:shortId", auth, async (req, res) => {
         httpOnly: c.httpOnly,
         secure: c.secure
       }));
-
-      console.log("📍 Status:", status);
-      console.log("📍 Redirect:", redirectUrl);
-      console.log("🍪 Cookies:", cookieList);
-
-      /**
-       * Step 5: Save cookies properly
-       */
+ 
+     
       if (cookieList.length > 0) {
         await Url.findOneAndUpdate(
           { shortId },
@@ -140,9 +132,7 @@ router.post("/t/:shortId", auth, async (req, res) => {
         );
       }
 
-      /**
-       * Step 6: Send response
-       */
+     
       return res.json({
         success: true,
         redirectUrl: redirectUrl || urlData.destinationUrl,

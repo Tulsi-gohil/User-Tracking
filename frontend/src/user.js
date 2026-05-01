@@ -8,7 +8,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchAllUsers = async () => {
       try {
-              const token = localStorage.getItem("token")
+        const token = localStorage.getItem("token")
 
         const response = await fetch('https://user-tracking-1.onrender.com/api/auth/users',
           {

